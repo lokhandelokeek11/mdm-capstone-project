@@ -23,6 +23,19 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
+function formatUser(u: User | null): User | null {
+  if (!u) return null;
+  let name = u.name;
+  if (u.email === "admin@demo-retail.com" || !name || name.includes("Demo Admin")) {
+    name = "Lokeek Lokhande";
+  } else if (u.email === "analyst@demo-retail.com" || name.includes("Demo Analyst")) {
+    name = "Gauri Dhondge";
+  } else if (u.email === "manager@demo-retail.com" || name.includes("Demo Manager")) {
+    name = "Ved Mahajan";
+  }
+  return { ...u, name };
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -35,7 +48,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     try {
       const res = await authApi.me();
-      setUser(res.data);
+      setUser(formatUser(res.data));
     } catch {
       setAuthToken(null);
       setUser(null);
@@ -51,13 +64,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = useCallback(async (data: LoginFormData) => {
     const res = await authApi.login(data);
     setAuthToken(res.data.token);
-    setUser(res.data.user);
+    setUser(formatUser(res.data.user));
   }, []);
 
   const register = useCallback(async (data: RegisterFormData) => {
     const res = await authApi.register(data);
     setAuthToken(res.data.token);
-    setUser(res.data.user);
+    setUser(formatUser(res.data.user));
   }, []);
 
   const logout = useCallback(async () => {
