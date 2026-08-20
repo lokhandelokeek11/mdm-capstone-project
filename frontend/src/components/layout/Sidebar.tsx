@@ -277,10 +277,10 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="h-9 w-9 rounded-full bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-sm font-bold text-white shadow-md">
-                {user?.name?.charAt(0) ?? "A"}
+                {user?.name?.charAt(0) ?? "L"}
               </div>
               <div className="overflow-hidden">
-                <p className="truncate text-xs font-semibold text-white">{user?.name ?? "Ashish Jain"}</p>
+                <p className="truncate text-xs font-semibold text-white">{user?.name ?? "Lokeek Lokhande"}</p>
                 <p className="truncate text-[10px] text-purple-300/80 font-medium">{user?.role ?? "Admin"}</p>
               </div>
             </div>

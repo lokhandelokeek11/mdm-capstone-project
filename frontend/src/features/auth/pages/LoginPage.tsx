@@ -22,9 +22,9 @@ import {
 } from "lucide-react";
 
 const demoAccounts = [
-  { role: "Admin", email: "admin@demo-retail.com", color: "bg-blue-50 text-blue-700 border-blue-200" },
-  { role: "Analyst", email: "analyst@demo-retail.com", color: "bg-violet-50 text-violet-700 border-violet-200" },
-  { role: "Manager", email: "manager@demo-retail.com", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
+  { role: "Lokeek Lokhande (Admin)", email: "admin@demo-retail.com", color: "bg-purple-50 text-purple-700 border-purple-200" },
+  { role: "Gauri Dhondge (Analyst)", email: "analyst@demo-retail.com", color: "bg-violet-50 text-violet-700 border-violet-200" },
+  { role: "Ved Mahajan (Manager)", email: "manager@demo-retail.com", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
 ];
 
 export function LoginPage() {

@@ -39,7 +39,7 @@ async function main() {
     where: { email: "admin@demo-retail.com" },
     update: {},
     create: {
-      name: "Demo Admin",
+      name: "Lokeek Lokhande",
       email: "admin@demo-retail.com",
       passwordHash,
       role: UserRole.ADMIN,
@@ -51,7 +51,7 @@ async function main() {
     where: { email: "analyst@demo-retail.com" },
     update: {},
     create: {
-      name: "Demo Analyst",
+      name: "Gauri Dhondge",
       email: "analyst@demo-retail.com",
       passwordHash,
       role: UserRole.MARKETING_ANALYST,
@@ -63,7 +63,7 @@ async function main() {
     where: { email: "manager@demo-retail.com" },
     update: {},
     create: {
-      name: "Demo Manager",
+      name: "Ved Mahajan",
       email: "manager@demo-retail.com",
       passwordHash,
       role: UserRole.MARKETING_MANAGER,
