@@ -57,11 +57,11 @@ export const datasetPipelineService = {
    */
   async detectSchema(filePath: string) {
     const fullPath = resolveDatasetPath(filePath);
-    if (!fs.existsSync(fullPath)) {
+    if (!fs.existsSync(/* turbopackIgnore: true */ fullPath)) {
       throw new Error(`Dataset file not found at ${fullPath}`);
     }
 
-    const fileStream = fs.createReadStream(fullPath);
+    const fileStream = fs.createReadStream(/* turbopackIgnore: true */ fullPath);
     const rl = readline.createInterface({ input: fileStream, crlfDelay: Infinity });
 
     let headers: string[] = [];
@@ -99,7 +99,7 @@ export const datasetPipelineService = {
    */
   async validateData(filePath: string): Promise<ValidationReport> {
     const fullPath = resolveDatasetPath(filePath);
-    if (!fs.existsSync(fullPath)) {
+    if (!fs.existsSync(/* turbopackIgnore: true */ fullPath)) {
       return {
         totalRecords: 2756101,
         validRecords: 2754820,
@@ -119,7 +119,7 @@ export const datasetPipelineService = {
       };
     }
 
-    const fileStream = fs.createReadStream(fullPath);
+    const fileStream = fs.createReadStream(/* turbopackIgnore: true */ fullPath);
     const rl = readline.createInterface({ input: fileStream, crlfDelay: Infinity });
 
     let totalRecords = 0;
@@ -196,8 +196,8 @@ export const datasetPipelineService = {
 
     const eventsToProcess: RawEventRecord[] = [];
 
-    if (fs.existsSync(fullPath)) {
-      const fileStream = fs.createReadStream(fullPath);
+    if (fs.existsSync(/* turbopackIgnore: true */ fullPath)) {
+      const fileStream = fs.createReadStream(/* turbopackIgnore: true */ fullPath);
       const rl = readline.createInterface({ input: fileStream, crlfDelay: Infinity });
 
       let isHeader = true;
