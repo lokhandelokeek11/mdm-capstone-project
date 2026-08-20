@@ -134,6 +134,7 @@ const navigationGroups: NavGroup[] = [
         label: "Admin",
         icon: Settings,
         children: [
+          { label: "Interactive System Demo", href: "/admin/demo" },
           { label: "Datasets", href: "/admin/datasets" },
           { label: "Models", href: "/admin/models" },
           { label: "Users", href: "/admin/users" },

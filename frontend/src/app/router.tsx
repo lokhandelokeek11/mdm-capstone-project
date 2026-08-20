@@ -23,6 +23,7 @@ const ProductAnalyticsPage = lazy(() => import("@/features/analytics/pages/Produ
 const DatasetsPage = lazy(() => import("@/features/admin/pages/DatasetsPage").then((m) => ({ default: m.DatasetsPage })));
 const DatasetUploadPage = lazy(() => import("@/features/admin/pages/DatasetUploadPage").then((m) => ({ default: m.DatasetUploadPage })));
 const ModelsPage = lazy(() => import("@/features/admin/pages/ModelsPage").then((m) => ({ default: m.ModelsPage })));
+const SystemDemoPage = lazy(() => import("@/features/admin/pages/SystemDemoPage").then((m) => ({ default: m.SystemDemoPage })));
 
 function Lazy({ children }: { children: React.ReactNode }) {
   return <Suspense fallback={<LoadingState rows={5} />}>{children}</Suspense>;
@@ -74,6 +75,7 @@ export const router = createBrowserRouter([
       { path: "experiments", element: <PlaceholderPage title="Experiments" /> },
       { path: "experiments/strategies", element: <PlaceholderPage title="Strategy Comparison" /> },
       { path: "experiments/models", element: <PlaceholderPage title="Model Evaluation" /> },
+      { path: "admin/demo", element: <Lazy><SystemDemoPage /></Lazy> },
       { path: "admin/datasets", element: <Lazy><DatasetsPage /></Lazy> },
       { path: "admin/datasets/upload", element: <Lazy><DatasetUploadPage /></Lazy> },
       { path: "admin/models", element: <Lazy><ModelsPage /></Lazy> },
