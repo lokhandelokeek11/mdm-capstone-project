@@ -96,7 +96,7 @@ export function DashboardPage() {
               CUSTOMER INTELLIGENCE PLATFORM
             </span>
             <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Good evening! {user?.name ?? "Demo Analyst"} 👋
+              Good evening! {user?.name ?? "Lokeek Lokhande"} 👋
             </h1>
             <p className="text-purple-100 text-sm max-w-xl font-medium">
               Here&apos;s what&apos;s happening across customer journeys, predictive scores, and marketing actions today.
@@ -105,11 +105,11 @@ export function DashboardPage() {
 
           <div className="hidden sm:flex items-center gap-3 rounded-2xl bg-white/15 backdrop-blur-md p-3 border border-white/20 shrink-0">
             <div className="h-10 w-10 rounded-full bg-white text-purple-700 font-extrabold flex items-center justify-center text-lg shadow-md">
-              {user?.name?.charAt(0) ?? "A"}
+              {user?.name?.charAt(0) ?? "L"}
             </div>
             <div className="text-left pr-2">
-              <p className="text-xs font-bold leading-tight text-white">{user?.name ?? "Ashish Jain"}</p>
-              <p className="text-[10px] text-purple-200 font-medium">Admin & Marketing Analyst</p>
+              <p className="text-xs font-bold leading-tight text-white">{user?.name ?? "Lokeek Lokhande"}</p>
+              <p className="text-[10px] text-purple-200 font-medium">{user?.role ?? "Admin & Marketing Lead"}</p>
             </div>
           </div>
         </div>
