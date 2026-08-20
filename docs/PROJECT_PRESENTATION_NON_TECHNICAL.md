@@ -72,11 +72,11 @@ Our platform is powered by the real-world **RetailRocket Behavioral Dataset**, r
 
 ### Dataset File Breakdown:
 
-| File Name                               | File Size | Record Count             | Core Purpose & Business Meaning                                                                                                                           |
-| :-------------------------------------- | :-------- | :----------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| File Name                       | File Size | Record Count       | Core Purpose & Business Meaning                                                                                                                     |
+| :------------------------------ | :-------- | :----------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`events.csv`**                | 114.5 MB  | **2,756,101 rows** | Primary log of all user touchpoints: timestamp, unique visitor ID, event type (`view`, `addtocart`, `transaction`), and product ID.                 |
-| **`category_tree.csv`**         | 35.8 KB   | **1,669 rows**     | Store taxonomy defining parent-child hierarchy across product categories (e.g., Electronics → Audio → Headphones).                                      |
-| **`item_properties_part1.csv`** | 582.4 KB  | **19,342 rows**    | Associates individual product IDs to their exact taxonomy category node within the category tree.                                                         |
+| **`category_tree.csv`**         | 35.8 KB   | **1,669 rows**     | Store taxonomy defining parent-child hierarchy across product categories (e.g., Electronics → Audio → Headphones).                                  |
+| **`item_properties_part1.csv`** | 582.4 KB  | **19,342 rows**    | Associates individual product IDs to their exact taxonomy category node within the category tree.                                                   |
 | **`item_properties_part2.csv`** | 412.1 KB  | **36,890 rows**    | Real-time catalog stock availability status (`property == "available"`, value `1` vs `0`). Used by NBMA to prevent recommending out-of-stock items. |
 
 ### Key E-Commerce Metrics Extracted:
@@ -122,12 +122,12 @@ graph LR
 
 ### Formal Evaluation Metrics Table:
 
-| Machine Learning Model                  | Algorithm Used      | Evaluation Score Metric             | Production Result         | Practical Business Meaning                                                                                                                |
-| :-------------------------------------- | :------------------ | :---------------------------------- | :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| Machine Learning Model            | Algorithm Used      | Evaluation Score Metric       | Production Result   | Practical Business Meaning                                                                                                                |
+| :-------------------------------- | :------------------ | :---------------------------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------- |
 | **Purchase Propensity Model**     | Logistic Regression | **Accuracy / ROC-AUC**        | **100.0% / 1.0000** | Predicts the probability (0% - 100%) that a customer will complete a purchase based on cart activity and browsing velocity.               |
 | **Customer Segmentation Model**   | K-Means Clustering  | **Silhouette Score**          | **0.8807**          | Automatically categorizes 1.4M customers into 4 distinct segments (High Intent, Cart Abandoners, Buyers, Inactive) based on RFM features. |
 | **Churn & Risk Prediction Model** | Gradient Boosting   | **Accuracy / F1-Score**       | **91.5% / 0.8840**  | Identifies customers at risk of abandoning the platform before they churn, allowing proactive re-engagement.                              |
-| **Next Event Prediction Model**   | Random Forest       | **Accuracy / Top-3 Accuracy** | **89.5% / 96.2%**   | Forecasts the exact next action a user will take (e.g.`ADD_TO_CART`, `PURCHASE`, `PRODUCT_VIEW`) in real-time.                      |
+| **Next Event Prediction Model**   | Random Forest       | **Accuracy / Top-3 Accuracy** | **89.5% / 96.2%**   | Forecasts the exact next action a user will take (e.g.`ADD_TO_CART`, `PURCHASE`, `PRODUCT_VIEW`) in real-time.                            |
 
 ---
 
@@ -160,27 +160,25 @@ mindmap
 #### 1. NAVIGATION
 
 - **Overview Dashboard (`/dashboard`)**:
-
   - Central command center displaying enterprise KPIs: **Total Customers (1,407,580)**, **Active Customers (385,420)**, **Total Sessions (2,756,101)**, **Conversion Rate (0.83%)**, and **Cart Abandonment Rate (67.6%)**.
   - Includes a visual conversion funnel illustrating customer progression from Awareness → Consideration → Intent → Purchase → Retention.
-- **Customers Directory (`/customers`)**:
 
-  - Profiles all 1.4M customers with instant tab filters: *All Customers (1.4M)*, *High Intent (27.1k)*, *Cart Abandoners (69.3k)*, *Buyers (22.4k)*, and *Inactive & Risk (1.0M)*.
+- **Customers Directory (`/customers`)**:
+  - Profiles all 1.4M customers with instant tab filters: _All Customers (1.4M)_, _High Intent (27.1k)_, _Cart Abandoners (69.3k)_, _Buyers (22.4k)_, and _Inactive & Risk (1.0M)_.
   - Every customer row displays a 2-digit index badge (`#01` to `#50`), real visitor ID (`#845`, `#1654`, `#12148`), journey stage, engagement progress bar, purchase propensity badge, segment tag, last activity, and purchase status.
   - Full pagination controls (`< Prev Page 1 of 28,152 Next >`).
-- **Journey Explorer (`/journeys`)**:
 
+- **Journey Explorer (`/journeys`)**:
   - Visualizes chronological touchpoint sequences per user.
   - Selecting any customer row expands a step-by-step **Chronological Flow Timeline** displaying **all events** (from 2 events up to 22 events) with step badges (`#1`, `#2` ... `#22`), event labels, item IDs, category tags, and timestamps.
   - Full pagination controls (`< Prev Page 1 of 55,122 Next >`).
-- **Customer Segments (`/segments`)**:
 
+- **Customer Segments (`/segments`)**:
   - Displays ML-driven behavioral segment distributions (High Intent Cart Abandoners, Frequent Repeat Buyers, Browsers, Inactive At-Risk) with RFM scores (Recency, Frequency, Monetary).
 
 #### 2. INTELLIGENCE & NEXT BEST ACTIONS (Core Project Highlight)
 
 - **Next Best Actions Console (`/next-best-actions`)**:
-
   - The flagship decision-making engine. It automatically matches customer propensity and journey stage with optimal business actions:
     - **`CART_REMINDER`**: Triggered for cart abandoners with verified inventory stock (`available: 1`).
     - **`DISCOUNT`**: Triggered for high-intent shoppers (propensity > 70%) to push instant checkout.
@@ -188,30 +186,28 @@ mindmap
     - **`STOP_MARKETING`**: Triggered for inactive users to suppress ad spend and minimize Customer Acquisition Cost (CAC).
   - Displays pending execution counts (**69,332**), stock validation checks, priority levels (`P10 High`), and an interactive **Trigger** button to fire real-time payloads.
   - Full pagination controls (`< Prev Page 1 of 6,934 Next >`).
-- **Predictive Intelligence (`/intelligence/predictions`)**:
 
+- **Predictive Intelligence (`/intelligence/predictions`)**:
   - Displays real-time model outputs across the entire customer base with model confidence meters (e.g. `96.1% average confidence`), predicted outcomes (`78% propensity`, `PURCHASE`, `ADD_TO_CART`), and computation timestamps.
   - Full pagination controls (`< Prev Page 1 of 140,758 Next >`).
-- **Product Recommendations (`/recommendations/products`)**:
 
+- **Product Recommendations (`/recommendations/products`)**:
   - Product-level personalization matrix linking category taxonomy to high-intent customer cohorts.
 
 #### 3. ANALYTICS & TESTING
 
 - **Executive Analytics (`/analytics`)**:
-
   - High-level executive reports on customer lifetime value (LTV), cohort retention curves, revenue attribution per action, and drop-off analysis.
-- **Experiments (`/experiments/strategies`)**:
 
+- **Experiments (`/experiments/strategies`)**:
   - A/B testing suite comparing automated NBMA rules against static control groups.
 
 #### 4. ADMINISTRATION
 
 - **Datasets Console (`/admin/datasets`)**:
-
   - Displays dataset health, row count (2,756,101), multi-file ingestion status (`events.csv`, `category_tree.csv`, `item_properties_part1.csv`, `item_properties_part2.csv`), and validation status.
-- **ML Models Console (`/admin/models`)**:
 
+- **ML Models Console (`/admin/models`)**:
   - Management hub for trained ML model versions, accuracy scores, training dates (`Aug 20, 2026`), and deployment status (`READY`).
 
 ---

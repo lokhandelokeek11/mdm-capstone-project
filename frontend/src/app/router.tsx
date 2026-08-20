@@ -17,6 +17,9 @@ const SegmentsPage = lazy(() => import("@/features/segments/pages/SegmentsPage")
 const PredictionsPage = lazy(() => import("@/features/intelligence/pages/PredictionsPage").then((m) => ({ default: m.PredictionsPage })));
 const NextBestActionsPage = lazy(() => import("@/features/next-best-actions/pages/NextBestActionsPage").then((m) => ({ default: m.NextBestActionsPage })));
 const AnalyticsPage = lazy(() => import("@/features/analytics/pages/AnalyticsPage").then((m) => ({ default: m.AnalyticsPage })));
+const FunnelAnalyticsPage = lazy(() => import("@/features/analytics/pages/FunnelAnalyticsPage").then((m) => ({ default: m.FunnelAnalyticsPage })));
+const SegmentAnalyticsPage = lazy(() => import("@/features/analytics/pages/SegmentAnalyticsPage").then((m) => ({ default: m.SegmentAnalyticsPage })));
+const ProductAnalyticsPage = lazy(() => import("@/features/analytics/pages/ProductAnalyticsPage").then((m) => ({ default: m.ProductAnalyticsPage })));
 const DatasetsPage = lazy(() => import("@/features/admin/pages/DatasetsPage").then((m) => ({ default: m.DatasetsPage })));
 const DatasetUploadPage = lazy(() => import("@/features/admin/pages/DatasetUploadPage").then((m) => ({ default: m.DatasetUploadPage })));
 const ModelsPage = lazy(() => import("@/features/admin/pages/ModelsPage").then((m) => ({ default: m.ModelsPage })));
@@ -65,9 +68,9 @@ export const router = createBrowserRouter([
       { path: "recommendations/products", element: <PlaceholderPage title="Product Recommendations" /> },
       { path: "recommendations/personalization", element: <PlaceholderPage title="Personalization" /> },
       { path: "analytics", element: <Lazy><AnalyticsPage /></Lazy> },
-      { path: "analytics/funnel", element: <PlaceholderPage title="Funnel Analytics" /> },
-      { path: "analytics/segments", element: <PlaceholderPage title="Segment Analytics" /> },
-      { path: "analytics/products", element: <PlaceholderPage title="Product Analytics" /> },
+      { path: "analytics/funnel", element: <Lazy><FunnelAnalyticsPage /></Lazy> },
+      { path: "analytics/segments", element: <Lazy><SegmentAnalyticsPage /></Lazy> },
+      { path: "analytics/products", element: <Lazy><ProductAnalyticsPage /></Lazy> },
       { path: "experiments", element: <PlaceholderPage title="Experiments" /> },
       { path: "experiments/strategies", element: <PlaceholderPage title="Strategy Comparison" /> },
       { path: "experiments/models", element: <PlaceholderPage title="Model Evaluation" /> },
