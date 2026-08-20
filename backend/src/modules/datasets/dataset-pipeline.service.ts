@@ -31,6 +31,16 @@ export interface RawEventRecord {
   transactionid?: string;
 }
 
+const DATA_DIR = path.join(process.cwd(), "data");
+
+function resolveDatasetPath(filePath: string): string {
+  if (path.isAbsolute(filePath)) {
+    return filePath;
+  }
+  const relativePath = filePath.replace(/^data[/\\]/, "");
+  return path.join(DATA_DIR, relativePath);
+}
+
 const EVENT_TYPE_MAP: Record<string, "PRODUCT_VIEW" | "ADD_TO_CART" | "PURCHASE"> = {
   view: "PRODUCT_VIEW",
   addtocart: "ADD_TO_CART",
@@ -46,7 +56,7 @@ export const datasetPipelineService = {
    * Reads first lines of CSV to detect headers and suggest system field mappings.
    */
   async detectSchema(filePath: string) {
-    const fullPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+    const fullPath = resolveDatasetPath(filePath);
     if (!fs.existsSync(fullPath)) {
       throw new Error(`Dataset file not found at ${fullPath}`);
     }
@@ -88,7 +98,7 @@ export const datasetPipelineService = {
    * Step 4 — Data Quality & Validation Report
    */
   async validateData(filePath: string): Promise<ValidationReport> {
-    const fullPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+    const fullPath = resolveDatasetPath(filePath);
     if (!fs.existsSync(fullPath)) {
       return {
         totalRecords: 2756101,
@@ -182,7 +192,7 @@ export const datasetPipelineService = {
     });
 
     const filePath = dataset.filePath || "data/raw/retailrocket/events.csv";
-    const fullPath = path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath);
+    const fullPath = resolveDatasetPath(filePath);
 
     const eventsToProcess: RawEventRecord[] = [];
 

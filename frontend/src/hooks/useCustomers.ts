@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { mockCustomers } from "@/features/customers/data/mockCustomers";
+import { mockCustomers, getMockCustomerById } from "@/features/customers/data/mockCustomers";
 import type { CustomerFilterFormData } from "@/schemas";
 
 const USE_MOCK = true;
@@ -24,7 +24,6 @@ export function useCustomer(id: string) {
     queryFn: async () => {
       if (USE_MOCK) {
         await new Promise((r) => setTimeout(r, 300));
-        const { getMockCustomerById } = await import("@/features/customers/data/mockCustomers");
         const customer = getMockCustomerById(id);
         if (!customer) throw new Error("Customer not found");
         return { data: customer };

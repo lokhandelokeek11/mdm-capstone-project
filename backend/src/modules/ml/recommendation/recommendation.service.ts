@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { RecommendedActionType } from "@/generated/prisma";
+import { RecommendedActionType } from "@/generated/prisma/client";
 
 export const recommendationService = {
   async getNextBestAction(organizationId: string, customerId: string) {
