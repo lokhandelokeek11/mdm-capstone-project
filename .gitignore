@@ -1,0 +1,84 @@
+# Dependencies
+node_modules/
+**/node_modules/
+
+# Production builds & dist
+dist/
+**/dist/
+build/
+**/build/
+out/
+.next/
+
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Python & ML virtual environments and libraries
+__pycache__/
+*.py[cod]
+*$py.class
+env/
+venv/
+ENV/
+.venv/
+.pytest_cache/
+ml/lib/
+ml/Include/
+ml/Scripts/
+ml/share/
+ml/bin/
+
+# Compressed Archives & Large Datasets (>100MB)
+*.zip
+*.tar.gz
+*.rar
+*.7z
+retailrocket/
+retailrocket.zip
+data/raw/retailrocket/*.csv
+
+# OS & Editor files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# Temporary & test coverage
+coverage/
+.nyc_output/
+.tempmediaStorage/
+scratch/
+
+# Agent & Assistant config folders
+.agents/
+**/.agents/
+.claude/
+**/.claude/
+.gemini/
+**/.gemini/
+

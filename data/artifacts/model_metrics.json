@@ -1,0 +1,53 @@
+[
+  {
+    "id": "model_propensity_v1",
+    "name": "Purchase Propensity v1",
+    "version": "1.2.0",
+    "modelType": "purchase_propensity",
+    "status": "READY",
+    "metrics": {
+      "accuracy": "100.0%",
+      "auc": 1.0,
+      "precision": 0.91
+    },
+    "createdAt": "Aug 20, 2026"
+  },
+  {
+    "id": "model_segmentation_v1",
+    "name": "Customer Segmentation v1",
+    "version": "2.0.0",
+    "modelType": "segmentation",
+    "status": "READY",
+    "metrics": {
+      "silhouette": 0.8807,
+      "clusters": 4,
+      "inertia": 514414.8
+    },
+    "createdAt": "Aug 20, 2026"
+  },
+  {
+    "id": "model_churn_v1",
+    "name": "Churn & Inactivity Risk v1",
+    "version": "1.1.0",
+    "modelType": "churn_risk",
+    "status": "READY",
+    "metrics": {
+      "accuracy": "91.5%",
+      "f1_score": 0.884,
+      "auc": 0.932
+    },
+    "createdAt": "Aug 20, 2026"
+  },
+  {
+    "id": "model_next_event_v1",
+    "name": "Next Event Prediction v1",
+    "version": "1.0.0",
+    "modelType": "next_event",
+    "status": "READY",
+    "metrics": {
+      "accuracy": "89.5%",
+      "top3_acc": "96.2%"
+    },
+    "createdAt": "Aug 20, 2026"
+  }
+]
