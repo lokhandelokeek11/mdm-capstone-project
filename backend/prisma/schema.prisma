@@ -1,0 +1,465 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  ADMIN
+  MARKETING_ANALYST
+  MARKETING_MANAGER
+}
+
+enum DatasetStatus {
+  PENDING
+  PROCESSING
+  READY
+  FAILED
+}
+
+enum DataSourceType {
+  CSV
+  JSON
+  REST_API
+  WEB_TRACKING
+  EXTERNAL
+}
+
+enum EventType {
+  PRODUCT_VIEW
+  SEARCH
+  CLICK
+  FAVORITE
+  ADD_TO_CART
+  REMOVE_FROM_CART
+  PURCHASE
+  EMAIL_CLICK
+  AD_CLICK
+  SESSION_START
+  SESSION_END
+}
+
+enum JourneyStageType {
+  AWARENESS
+  CONSIDERATION
+  INTENT
+  PURCHASE
+  RETENTION
+  CHURN_RISK
+  INACTIVE
+}
+
+enum PredictionType {
+  NEXT_EVENT
+  PURCHASE_PROPENSITY
+  CHURN_RISK
+  INACTIVITY_RISK
+}
+
+enum RecommendedActionType {
+  WAIT
+  PRODUCT_RECOMMENDATION
+  CART_REMINDER
+  PERSONALIZED_EMAIL
+  RETARGETING
+  DISCOUNT
+  CROSS_SELL
+  RE_ENGAGEMENT
+  STOP_MARKETING
+}
+
+enum ExperimentStatus {
+  DRAFT
+  RUNNING
+  COMPLETED
+  CANCELLED
+}
+
+enum ModelStatus {
+  TRAINING
+  READY
+  DEPRECATED
+  FAILED
+}
+
+// ─── Core Tenant Models ──────────────────────────────────────────────────────
+
+model Organization {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users                  User[]
+  datasets               Dataset[]
+  customers              Customer[]
+  sessions               Session[]
+  events                 Event[]
+  products               Product[]
+  transactions           Transaction[]
+  customerFeatures       CustomerFeature[]
+  journeyStages          JourneyStage[]
+  segments               Segment[]
+  predictions            Prediction[]
+  modelVersions          ModelVersion[]
+  recommendedActions     RecommendedAction[]
+  productRecommendations ProductRecommendation[]
+  strategyExperiments    StrategyExperiment[]
+  auditLogs              AuditLog[]
+
+  @@index([slug])
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String
+  passwordHash   String
+  role           UserRole @default(MARKETING_ANALYST)
+  organizationId String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  auditLogs    AuditLog[]
+
+  @@index([organizationId])
+  @@index([email])
+}
+
+// ─── Dataset Models ──────────────────────────────────────────────────────────
+
+model Dataset {
+  id             String         @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  sourceType     DataSourceType @default(CSV)
+  status         DatasetStatus  @default(PENDING)
+  rowCount       Int            @default(0)
+  filePath       String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  organization Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  columns      DatasetColumn[]
+  events       Event[]
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+model DatasetColumn {
+  id         String  @id @default(cuid())
+  datasetId  String
+  name       String
+  dataType   String
+  isRequired Boolean @default(false)
+  mappedTo   String?
+
+  dataset Dataset @relation(fields: [datasetId], references: [id], onDelete: Cascade)
+
+  @@index([datasetId])
+}
+
+// ─── Customer & Journey Models ───────────────────────────────────────────────
+
+model Customer {
+  id             String   @id @default(cuid())
+  organizationId String
+  externalId     String?
+  email          String?
+  name           String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization           Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  sessions               Session[]
+  events                 Event[]
+  transactions           Transaction[]
+  features               CustomerFeature[]
+  customerSegments       CustomerSegment[]
+  predictions            Prediction[]
+  recommendedActions     RecommendedAction[]
+  productRecommendations ProductRecommendation[]
+
+  @@unique([organizationId, externalId])
+  @@index([organizationId])
+  @@index([organizationId, createdAt])
+}
+
+model Session {
+  id             String    @id @default(cuid())
+  organizationId String
+  customerId     String
+  startedAt      DateTime
+  endedAt        DateTime?
+  createdAt      DateTime  @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  events       Event[]
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([organizationId, startedAt])
+}
+
+model Event {
+  id             String    @id @default(cuid())
+  organizationId String
+  customerId     String
+  sessionId      String?
+  datasetId      String?
+  eventType      EventType
+  productId      String?
+  metadata       Json?
+  occurredAt     DateTime
+  createdAt      DateTime  @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  session      Session?     @relation(fields: [sessionId], references: [id], onDelete: SetNull)
+  dataset      Dataset?     @relation(fields: [datasetId], references: [id], onDelete: SetNull)
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([sessionId])
+  @@index([eventType])
+  @@index([organizationId, occurredAt])
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  organizationId String
+  externalId     String?
+  name           String
+  category       String?
+  price          Decimal? @db.Decimal(12, 2)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization           Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  events                 Event[]
+  transactions           Transaction[]
+  productRecommendations ProductRecommendation[]
+
+  @@unique([organizationId, externalId])
+  @@index([organizationId])
+}
+
+model Transaction {
+  id             String   @id @default(cuid())
+  organizationId String
+  customerId     String
+  productId      String?
+  amount         Decimal  @db.Decimal(12, 2)
+  quantity       Int      @default(1)
+  occurredAt     DateTime
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  product      Product?     @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([organizationId, occurredAt])
+}
+
+model CustomerFeature {
+  id             String   @id @default(cuid())
+  organizationId String
+  customerId     String
+  featureKey     String
+  featureValue   Json
+  computedAt     DateTime @default(now())
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, featureKey])
+  @@index([organizationId])
+  @@index([customerId])
+}
+
+model JourneyStage {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  stageType      JourneyStageType
+  description    String?
+  orderIndex     Int              @default(0)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+}
+
+// ─── Segmentation ────────────────────────────────────────────────────────────
+
+model Segment {
+  id             String   @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  criteria       Json?
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  organization     Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customerSegments CustomerSegment[]
+
+  @@index([organizationId])
+}
+
+model CustomerSegment {
+  id         String   @id @default(cuid())
+  customerId String
+  segmentId  String
+  assignedAt DateTime @default(now())
+
+  customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  segment  Segment  @relation(fields: [segmentId], references: [id], onDelete: Cascade)
+
+  @@unique([customerId, segmentId])
+  @@index([segmentId])
+}
+
+// ─── ML & Intelligence ───────────────────────────────────────────────────────
+
+model Prediction {
+  id             String         @id @default(cuid())
+  organizationId String
+  customerId     String
+  modelVersionId String?
+  predictionType PredictionType
+  predictedValue Json
+  confidence     Float?
+  createdAt      DateTime       @default(now())
+
+  organization Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  modelVersion ModelVersion? @relation(fields: [modelVersionId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([predictionType])
+}
+
+model ModelVersion {
+  id             String      @id @default(cuid())
+  organizationId String
+  name           String
+  modelType      String
+  version        String
+  status         ModelStatus @default(TRAINING)
+  metrics        Json?
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  predictions  Prediction[]
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+model RecommendedAction {
+  id             String                @id @default(cuid())
+  organizationId String
+  customerId     String
+  actionType     RecommendedActionType
+  reason         String?
+  priority       Int                   @default(0)
+  metadata       Json?
+  createdAt      DateTime              @default(now())
+  expiresAt      DateTime?
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([customerId])
+  @@index([actionType])
+}
+
+model ProductRecommendation {
+  id             String   @id @default(cuid())
+  organizationId String
+  customerId     String
+  productId      String
+  score          Float?
+  reason         String?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  customer     Customer     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  product      Product      @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([customerId])
+}
+
+// ─── Experiments & Audit ─────────────────────────────────────────────────────
+
+model StrategyExperiment {
+  id             String           @id @default(cuid())
+  organizationId String
+  name           String
+  description    String?
+  status         ExperimentStatus @default(DRAFT)
+  config         Json?
+  startedAt      DateTime?
+  endedAt        DateTime?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  organization Organization      @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  results      ExperimentResult[]
+
+  @@index([organizationId])
+  @@index([status])
+}
+
+model ExperimentResult {
+  id           String   @id @default(cuid())
+  experimentId String
+  metricName   String
+  metricValue  Float
+  variant      String?
+  recordedAt   DateTime @default(now())
+
+  experiment StrategyExperiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+
+  @@index([experimentId])
+}
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  organizationId String
+  userId         String?
+  action         String
+  resource       String
+  resourceId     String?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user         User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([organizationId])
+  @@index([userId])
+  @@index([createdAt])
+}
