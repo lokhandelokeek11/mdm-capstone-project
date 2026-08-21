@@ -3,7 +3,6 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 import { ProtectedRoute, PublicRoute } from "@/components/layout/ProtectedRoute";
 import { LoadingState } from "@/components/feedback/LoadingState";
-import { PlaceholderPage } from "@/components/common/PlaceholderPage";
 
 const LandingPage = lazy(() => import("@/features/landing/pages/LandingPage").then((m) => ({ default: m.LandingPage })));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage").then((m) => ({ default: m.LoginPage })));
@@ -53,21 +52,21 @@ export const router = createBrowserRouter([
       { path: "customers", element: <Lazy><CustomersPage /></Lazy> },
       { path: "customers/:id", element: <Lazy><CustomerDetailPage /></Lazy> },
       { path: "journeys", element: <Lazy><JourneyExplorerPage /></Lazy> },
-      { path: "journeys/stages", element: <PlaceholderPage title="Journey Stages" /> },
-      { path: "journeys/paths", element: <PlaceholderPage title="Common Paths" /> },
-      { path: "journeys/dropoffs", element: <PlaceholderPage title="Drop-Off Analysis" /> },
+      { path: "journeys/stages", element: <Lazy><JourneyExplorerPage /></Lazy> },
+      { path: "journeys/paths", element: <Lazy><JourneyExplorerPage /></Lazy> },
+      { path: "journeys/dropoffs", element: <Lazy><FunnelAnalyticsPage /></Lazy> },
       { path: "segments", element: <Lazy><SegmentsPage /></Lazy> },
-      { path: "segments/rfm", element: <PlaceholderPage title="RFM / Behavioral Segments" /> },
-      { path: "segments/clusters", element: <PlaceholderPage title="ML Clusters" /> },
+      { path: "segments/rfm", element: <Lazy><SegmentAnalyticsPage /></Lazy> },
+      { path: "segments/clusters", element: <Lazy><SegmentsPage /></Lazy> },
       { path: "intelligence/predictions", element: <Lazy><PredictionsPage /></Lazy> },
-      { path: "intelligence/propensity", element: <PlaceholderPage title="Purchase Propensity" /> },
-      { path: "intelligence/risk", element: <PlaceholderPage title="Risk Analysis" /> },
-      { path: "intelligence/explanations", element: <PlaceholderPage title="Model Explanation" /> },
+      { path: "intelligence/propensity", element: <Lazy><PredictionsPage /></Lazy> },
+      { path: "intelligence/risk", element: <Lazy><PredictionsPage /></Lazy> },
+      { path: "intelligence/explanations", element: <Lazy><ModelsPage /></Lazy> },
       { path: "next-best-actions", element: <Lazy><NextBestActionsPage /></Lazy> },
-      { path: "next-best-actions/rules", element: <PlaceholderPage title="Action Rules" /> },
-      { path: "next-best-actions/suppression", element: <PlaceholderPage title="Suppression / Wait" /> },
-      { path: "recommendations/products", element: <PlaceholderPage title="Product Recommendations" /> },
-      { path: "recommendations/personalization", element: <PlaceholderPage title="Personalization" /> },
+      { path: "next-best-actions/rules", element: <Lazy><NextBestActionsPage /></Lazy> },
+      { path: "next-best-actions/suppression", element: <Lazy><NextBestActionsPage /></Lazy> },
+      { path: "recommendations/products", element: <Lazy><ProductAnalyticsPage /></Lazy> },
+      { path: "recommendations/personalization", element: <Lazy><NextBestActionsPage /></Lazy> },
       { path: "analytics", element: <Lazy><AnalyticsPage /></Lazy> },
       { path: "analytics/funnel", element: <Lazy><FunnelAnalyticsPage /></Lazy> },
       { path: "analytics/segments", element: <Lazy><SegmentAnalyticsPage /></Lazy> },
@@ -79,8 +78,8 @@ export const router = createBrowserRouter([
       { path: "admin/datasets", element: <Lazy><DatasetsPage /></Lazy> },
       { path: "admin/datasets/upload", element: <Lazy><DatasetUploadPage /></Lazy> },
       { path: "admin/models", element: <Lazy><ModelsPage /></Lazy> },
-      { path: "admin/users", element: <PlaceholderPage title="User Management" /> },
-      { path: "admin/configuration", element: <PlaceholderPage title="Configuration" /> },
+      { path: "admin/users", element: <Lazy><SystemDemoPage /></Lazy> },
+      { path: "admin/configuration", element: <Lazy><ModelsPage /></Lazy> },
     ],
   },
   { path: "*", element: <Navigate to="/" replace /> },
