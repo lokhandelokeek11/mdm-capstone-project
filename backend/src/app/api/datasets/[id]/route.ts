@@ -28,6 +28,6 @@ export async function DELETE(
 }
 
 export async function OPTIONS() {
-  const { handleOptions } = await import("@/middleware");
+  const { handleOptions } = await import("@/utils/cors");
   return handleOptions();
 }

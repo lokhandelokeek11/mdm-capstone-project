@@ -19,6 +19,6 @@ export async function GET(
 }
 
 export async function OPTIONS() {
-  const { handleOptions } = await import("@/middleware");
+  const { handleOptions } = await import("@/utils/cors");
   return handleOptions();
 }

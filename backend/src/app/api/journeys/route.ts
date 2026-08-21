@@ -15,6 +15,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function OPTIONS() {
-  const { handleOptions } = await import("@/middleware");
+  const { handleOptions } = await import("@/utils/cors");
   return handleOptions();
 }
