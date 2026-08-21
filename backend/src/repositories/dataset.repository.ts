@@ -3,24 +3,39 @@ import { DatasetUploadInput } from "@/schemas";
 
 export const datasetRepository = {
   async findMany(organizationId: string, skip: number, limit: number) {
-    return prisma.dataset.findMany({
-      where: { organizationId },
-      skip,
-      take: limit,
-      orderBy: { createdAt: "desc" },
-      include: { columns: true },
-    });
+    try {
+      return await prisma.dataset.findMany({
+        where: { organizationId },
+        skip,
+        take: limit,
+        orderBy: { createdAt: "desc" },
+        include: { columns: true },
+      });
+    } catch (error) {
+      console.error("datasetRepository.findMany DB error:", error);
+      return [];
+    }
   },
 
   async count(organizationId: string) {
-    return prisma.dataset.count({ where: { organizationId } });
+    try {
+      return await prisma.dataset.count({ where: { organizationId } });
+    } catch (error) {
+      console.error("datasetRepository.count DB error:", error);
+      return 0;
+    }
   },
 
   async findById(organizationId: string, id: string) {
-    return prisma.dataset.findFirst({
-      where: { id, organizationId },
-      include: { columns: true },
-    });
+    try {
+      return await prisma.dataset.findFirst({
+        where: { id, organizationId },
+        include: { columns: true },
+      });
+    } catch (error) {
+      console.error("datasetRepository.findById DB error:", error);
+      return null;
+    }
   },
 
   async create(organizationId: string, data: DatasetUploadInput) {

@@ -3,17 +3,27 @@ import { Prisma } from "@/generated/prisma/client";
 
 export const userRepository = {
   async findByEmail(email: string) {
-    return prisma.user.findUnique({
-      where: { email },
-      include: { organization: true },
-    });
+    try {
+      return await prisma.user.findUnique({
+        where: { email },
+        include: { organization: true },
+      });
+    } catch (error) {
+      console.error("userRepository.findByEmail DB error:", error);
+      return null;
+    }
   },
 
   async findById(id: string) {
-    return prisma.user.findUnique({
-      where: { id },
-      include: { organization: true },
-    });
+    try {
+      return await prisma.user.findUnique({
+        where: { id },
+        include: { organization: true },
+      });
+    } catch (error) {
+      console.error("userRepository.findById DB error:", error);
+      return null;
+    }
   },
 
   async create(data: Prisma.UserCreateInput) {
@@ -26,7 +36,12 @@ export const userRepository = {
 
 export const organizationRepository = {
   async findBySlug(slug: string) {
-    return prisma.organization.findUnique({ where: { slug } });
+    try {
+      return await prisma.organization.findUnique({ where: { slug } });
+    } catch (error) {
+      console.error("organizationRepository.findBySlug DB error:", error);
+      return null;
+    }
   },
 
   async create(data: Prisma.OrganizationCreateInput) {
