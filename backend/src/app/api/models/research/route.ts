@@ -8,9 +8,11 @@ export async function GET(request: NextRequest) {
     requireAuth(request);
     const results = researchService.getResults();
     if (!results) {
-      return successResponse(null, { message: "Run ml/train_models.py to generate research_results.json" });
+      return successResponse<Record<string, unknown> | null>(null, {
+        message: "Run ml/train_models.py to generate research_results.json",
+      });
     }
-    return successResponse(results);
+    return successResponse<Record<string, unknown> | null>(results);
   });
 }
 
