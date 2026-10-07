@@ -23,6 +23,7 @@ const DatasetsPage = lazy(() => import("@/features/admin/pages/DatasetsPage").th
 const DatasetUploadPage = lazy(() => import("@/features/admin/pages/DatasetUploadPage").then((m) => ({ default: m.DatasetUploadPage })));
 const ModelsPage = lazy(() => import("@/features/admin/pages/ModelsPage").then((m) => ({ default: m.ModelsPage })));
 const SystemDemoPage = lazy(() => import("@/features/admin/pages/SystemDemoPage").then((m) => ({ default: m.SystemDemoPage })));
+const StrategyComparisonPage = lazy(() => import("@/features/analytics/pages/StrategyComparisonPage").then((m) => ({ default: m.StrategyComparisonPage })));
 
 function Lazy({ children }: { children: React.ReactNode }) {
   return <Suspense fallback={<LoadingState rows={5} />}>{children}</Suspense>;
@@ -71,8 +72,8 @@ export const router = createBrowserRouter([
       { path: "analytics/funnel", element: <Lazy><FunnelAnalyticsPage /></Lazy> },
       { path: "analytics/segments", element: <Lazy><SegmentAnalyticsPage /></Lazy> },
       { path: "analytics/products", element: <Lazy><ProductAnalyticsPage /></Lazy> },
-      { path: "experiments", element: <Lazy><ModelsPage /></Lazy> },
-      { path: "experiments/strategies", element: <Lazy><ModelsPage /></Lazy> },
+      { path: "experiments", element: <Lazy><StrategyComparisonPage /></Lazy> },
+      { path: "experiments/strategies", element: <Lazy><StrategyComparisonPage /></Lazy> },
       { path: "experiments/models", element: <Lazy><ModelsPage /></Lazy> },
       { path: "admin/demo", element: <Lazy><SystemDemoPage /></Lazy> },
       { path: "admin/datasets", element: <Lazy><DatasetsPage /></Lazy> },

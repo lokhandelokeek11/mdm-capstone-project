@@ -71,6 +71,24 @@ async function main() {
     },
   });
 
+  // Clean up existing demo organization records for idempotent seeding
+  await prisma.auditLog.deleteMany({ where: { organizationId: org.id } });
+  await prisma.strategyExperiment.deleteMany({ where: { organizationId: org.id } });
+  await prisma.productRecommendation.deleteMany({ where: { organizationId: org.id } });
+  await prisma.recommendedAction.deleteMany({ where: { organizationId: org.id } });
+  await prisma.prediction.deleteMany({ where: { organizationId: org.id } });
+  await prisma.customerSegment.deleteMany({ where: { customer: { organizationId: org.id } } });
+  await prisma.customerFeature.deleteMany({ where: { organizationId: org.id } });
+  await prisma.transaction.deleteMany({ where: { organizationId: org.id } });
+  await prisma.event.deleteMany({ where: { organizationId: org.id } });
+  await prisma.session.deleteMany({ where: { organizationId: org.id } });
+  await prisma.customer.deleteMany({ where: { organizationId: org.id } });
+  await prisma.modelVersion.deleteMany({ where: { organizationId: org.id } });
+  await prisma.product.deleteMany({ where: { organizationId: org.id } });
+  await prisma.segment.deleteMany({ where: { organizationId: org.id } });
+  await prisma.journeyStage.deleteMany({ where: { organizationId: org.id } });
+  await prisma.dataset.deleteMany({ where: { organizationId: org.id } });
+
   const dataset = await prisma.dataset.create({
     data: {
       organizationId: org.id,

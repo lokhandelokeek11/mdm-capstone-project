@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Journey Intelligence (JourneyIQ) — Comprehensive Project Review & Technical Guide</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
+
+    @page {
+      size: A4;
+      margin: 18mm 16mm 18mm 16mm;
+      @bottom-right {
+        content: counter(page);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 8pt;
+        color: #64748b;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #0f172a;
+      background-color: #ffffff;
+      line-height: 1.55;
+      font-size: 9.5pt;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Cover / Header styling */
+    .header-cover {
+      background: linear-gradient(135deg, #1e1145 0%, #0d0722 100%);
+      color: #ffffff;
+      padding: 32px 28px;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      border: 1px solid #3b2282;
+      box-shadow: 0 10px 25px rgba(30, 17, 69, 0.15);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+
+    .badge-purple {
+      background: rgba(168, 85, 247, 0.25);
+      color: #d8b4fe;
+      border: 1px solid rgba(192, 132, 252, 0.4);
+    }
+
+    .badge-emerald {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+
+    .badge-amber {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .header-cover h1 {
+      font-size: 22pt;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .header-cover p.subtitle {
+      font-size: 10pt;
+      color: #cbd5e1;
+      max-width: 90%;
+      margin-bottom: 16px;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 8pt;
+      color: #e2e8f0;
+    }
+
+    .header-meta div {
+      display: flex;
+      gap: 6px;
+    }
+
+    .header-meta strong {
+      color: #c084fc;
+    }
+
+    /* Section Styling */
+    h2 {
+      font-size: 13pt;
+      font-weight: 800;
+      color: #1e1145;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      padding-bottom: 5px;
+      border-bottom: 2px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      page-break-after: avoid;
+    }
+
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      page-break-after: avoid;
+    }
+
+    p {
+      margin-bottom: 8px;
+      color: #334155;
+    }
+
+    /* Cards & Callouts */
+    .card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+
+    .card-purple {
+      background: #faf5ff;
+      border: 1px solid #e9d5ff;
+    }
+
+    .card-dark {
+      background: #0f172a;
+      color: #f8fafc;
+      border: 1px solid #334155;
+    }
+
+    .card-dark p, .card-dark li {
+      color: #cbd5e1;
+    }
+
+    .callout {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 8.5pt;
+      margin: 10px 0;
+      border-left: 4px solid;
+      page-break-inside: avoid;
+    }
+
+    .callout-info {
+      background: #eff6ff;
+      border-color: #3b82f6;
+      color: #1e40af;
+    }
+
+    .callout-tip {
+      background: #f0fdf4;
+      border-color: #10b981;
+      color: #065f46;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+
+    /* KPI Stat Box */
+    .kpi-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    .kpi-title {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-val {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #1e1145;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 2px;
+    }
+
+    .kpi-desc {
+      font-size: 7pt;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 14px 0;
+      font-size: 8pt;
+      page-break-inside: avoid;
+    }
+
+    th {
+      background-color: #1e1145;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: left;
+      padding: 6px 8px;
+      border: 1px solid #1e1145;
+    }
+
+    td {
+      padding: 5px 8px;
+      border: 1px solid #e2e8f0;
+      color: #334155;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    tr.highlight td {
+      background-color: #f3e8ff;
+      font-weight: 700;
+      color: #6b21a8;
+    }
+
+    /* Code & Formulas */
+    code, pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+    }
+
+    code {
+      background: #f1f5f9;
+      color: #6b21a8;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+
+    ul, ol {
+      margin-left: 18px;
+      margin-bottom: 8px;
+    }
+
+    li {
+      margin-bottom: 3px;
+      color: #334155;
+    }
+
+    .page-break {
+      page-break-before: always;
+    }
+
+    .slide-tag {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #3730a3;
+      font-weight: 800;
+      font-size: 7pt;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER COVER ==================== -->
+  <div class="header-cover">
+    <span class="badge badge-purple">B.Tech Capstone Project • Complete Review Dossier</span>
+    <h1>Customer Journey Intelligence (JourneyIQ)</h1>
+    <p class="subtitle">
+      Comprehensive Project Presentation Breakdown, Predictive Machine Learning Architecture, Empirical Research Results (RQ1–RQ4), and Full Platform Review Guide.
+    </p>
+    <div class="header-meta">
+      <div><strong>Platform:</strong> JourneyIQ Enterprise Suite</div>
+      <div><strong>Dataset:</strong> RetailRocket (2.75M Events)</div>
+      <div><strong>Tech Stack:</strong> React 19 • Vite • Next.js 16 • PyTorch • XGBoost • PostgreSQL</div>
+      <div><strong>Architecture:</strong> Multi-Tenant SaaS • Offline Simulation Protocol</div>
+    </div>
+  </div>
+
+  <!-- ==================== 1. EXECUTIVE SUMMARY & CORE CONCEPTS ==================== -->
+  <h2>1. Executive Summary & Core Value Proposition</h2>
+  <div class="card card-purple">
+    <p>
+      In modern e-commerce, businesses capture millions of digital touchpoints (clicks, product views, category browsing, cart additions, search queries). However, <strong>over 85% of visitors remain in browsing/inactive stages</strong>, and raw transaction rates often fall below <strong>0.1%</strong>. Traditional marketing automation relies on blunt, batch campaigns (broadcasting generic discount codes or blast emails) that:
+    </p>
+    <ul>
+      <li><strong>Trigger Marketing Fatigue & Unsubscribes:</strong> Annoying casual browsers with unsolicited emails.</li>
+      <li><strong>Cannibalize Margin:</strong> Giving unnecessary discounts to high-intent shoppers who were already going to buy.</li>
+      <li><strong>Lack Timing Relevance:</strong> Failing to understand where a customer is in their dynamic journey timeline.</li>
+    </ul>
+    <p style="margin-top: 6px;">
+      <strong>JourneyIQ solves this by acting as an AI Decision Brain:</strong> It continuously models event sequences, quantifies purchase propensity & churn risk, segments shoppers into dynamic behavioral cohorts, and prescribes the <strong>Next Best Marketing Action (NBMA)</strong>—including explicit, non-intrusive <strong>WAIT & SUPPRESS</strong> decisions that preserve brand equity and marketing spend.
+    </p>
+  </div>
+
+  <div class="grid-4">
+    <div class="kpi-box">
+      <div class="kpi-title">Clean Behavioral Events</div>
+      <div class="kpi-val">2.75M</div>
+      <div class="kpi-desc">Processed RetailRocket logs</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-title">Unique Customer Profiles</div>
+      <div class="kpi-val">1.40M</div>
+      <div class="kpi-desc">Sessionized user journeys</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-title">Research Cohort Split</div>
+      <div class="kpi-val">35,000</div>
+      <div class="kpi-desc">Chronological 80/20 &tau; cutoff</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-title">Fatigue Suppressions</div>
+      <div class="kpi-val">4,391</div>
+      <div class="kpi-desc">62.7% non-intrusive wait actions</div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. END-TO-END SYSTEM ARCHITECTURE ==================== -->
+  <h2>2. End-to-End System Architecture</h2>
+  <p>The platform is organized into five decoupled layers operating across Python ML pipelines, a Next.js API server, and a React Vite frontend:</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="color: #047857;">Layer 1 & 2: Data Ingestion & Journey Processing</h3>
+      <ul style="font-size: 8.5pt;">
+        <li><strong>Ingestion:</strong> Cleans raw <code>events.csv</code>, category hierarchy (1,669 nodes), and item stock status (36.8k catalog properties).</li>
+        <li><strong>Sessionization:</strong> Groups sequential interactions using an industry-standard <strong>30-minute inactivity boundary</strong>.</li>
+        <li><strong>Journey State Engine:</strong> Maps dynamic customer progress across 7 stages: <em>Inactive &rarr; Initial Engagement &rarr; Exploration &rarr; Consideration &rarr; High Intent &rarr; Conversion &rarr; Retention</em>.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color: #6b21a8;">Layer 3 & 4: Predictive AI & NBMA Decision Engine</h3>
+      <ul style="font-size: 8.5pt;">
+        <li><strong>Sequence Modeling:</strong> GRU Deep Neural Network predicting the exact next touchpoint (View, Cart, Purchase).</li>
+        <li><strong>Propensity Engine:</strong> Journey-aware XGBoost & Logistic Regression evaluated on PR-AUC.</li>
+        <li><strong>NBMA Decision Matrix:</strong> Multi-criteria policy engine evaluating purchase probability, journey stage, churn risk, and catalog stock to select actions (Email, Discount, Cart Reminder, Wait, Suppress).</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 3. EXPERIMENTAL PROTOCOL ==================== -->
+  <h2>3. Research Methodology & Experimental Protocol (Paper Sec. IX-A)</h2>
+  <div class="callout callout-info">
+    <strong>No Future Peeking (Strict Chronological Cutoff):</strong> In e-commerce forecasting, random train/test splits cause severe <em>data leakage</em> (predicting past events using future observations). We enforce a strict chronological cutoff at &tau; = 80th percentile of dataset timestamps.
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <h3>1. Training Set (70%)</h3>
+      <p style="font-size: 8pt;"><strong>24,500 visitors</strong> with all behavioral features extracted exclusively before &tau;.</p>
+    </div>
+    <div class="card">
+      <h3>2. Validation Set (10%)</h3>
+      <p style="font-size: 8pt;"><strong>3,500 visitors</strong> used for tuning XGBoost <code>scale_pos_weight = 2.0</code> on validation PR-AUC.</p>
+    </div>
+    <div class="card">
+      <h3>3. Held-Out Test Set (20%)</h3>
+      <p style="font-size: 8pt;"><strong>7,000 visitors</strong> evaluated on post-&tau; ground truth (0.07% true conversion rate).</p>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== 4. SLIDE-BY-SLIDE PPT BREAKDOWN ==================== -->
+  <h2>4. Slide-by-Slide PPT Presentation Analysis</h2>
+  <p>Detailed analysis of each slide from the project review presentation (<code>Customer-Journey-Intelligence.pptx</code>):</p>
+
+  <div class="card">
+    <span class="slide-tag">SLIDE 1 & 2</span> <strong>Title & The Core Industry Problem</strong>
+    <p style="font-size: 8.5pt; margin-top: 4px;">
+      <strong>Key Concept:</strong> "Clicks become useful when they lead to action." Modern stores have too many clicks but zero clarity on who to nurture, who to incentivize, and who to leave alone. 
+      <br><strong>Speaker Focus:</strong> Explain that raw tracking is easy, but actionable, explainable decisioning without customer fatigue is the real challenge.
+    </p>
+  </div>
+
+  <div class="card">
+    <span class="slide-tag">SLIDE 3</span> <strong>End-to-End System Architecture</strong>
+    <p style="font-size: 8.5pt; margin-top: 4px;">
+      <strong>Key Concept:</strong> Four-color architectural pipeline: <em>Green (Data Pipeline) &rarr; Purple (Intelligence & ML Models) &rarr; Orange (REST API & Web App) &rarr; Grey (Role-based users: Admin, Analyst, Manager)</em>.
+      <br><strong>Speaker Focus:</strong> Highlight that the backend and frontend are production-ready decoupled systems with full multi-tenancy.
+    </p>
+  </div>
+
+  <div class="card">
+    <span class="slide-tag">SLIDE 4 & 6</span> <strong>The Data Shape & Funnel Reality</strong>
+    <p style="font-size: 8.5pt; margin-top: 4px;">
+      <strong>Key Concept:</strong> 2,756,101 raw events cleaned to 2,755,641 events (removing 460 duplicates). The funnel demonstrates extreme e-commerce drop-off:
+    </p>
+    <table>
+      <thead>
+        <tr>
+          <th>Funnel Stage</th>
+          <th>Visitor Count</th>
+          <th>Percentage of 35k Cohort</th>
+          <th>Drop-Off Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>All Cohort Visitors</td><td>35,000</td><td>100.00%</td><td>—</td></tr>
+        <tr><td>&ge;1 Product View</td><td>34,913</td><td>99.75%</td><td>0.25% drop</td></tr>
+        <tr><td>&ge;1 Add-to-Cart</td><td>928</td><td>2.65%</td><td><strong>97.34% drop</strong> from View</td></tr>
+        <tr><td>&ge;1 Purchase (Pre-Cutoff)</td><td>283</td><td>0.81%</td><td><strong>69.5% drop</strong> from Cart</td></tr>
+        <tr class="highlight"><td>Post-Cutoff Future Buyers</td><td>26</td><td>0.07%</td><td>Severe Imbalance Ground Truth</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <span class="slide-tag">SLIDE 5</span> <strong>The Comprehensive Model Suite</strong>
+    <p style="font-size: 8.5pt; margin-top: 4px;">
+      <strong>Key Concept:</strong> Covers 4 interconnected ML dimensions: Next-Event Forecasting, Behavioral Grouping, Purchase Propensity with PR-AUC, and the NBMA Decision & SHAP Attribution Layer.
+    </p>
+  </div>
+
+  <div class="card">
+    <span class="slide-tag">SLIDE 7 & 8</span> <strong>The Four Core Research Questions (RQ1–RQ4)</strong>
+    <p style="font-size: 8.5pt; margin-top: 4px;">
+      <strong>Key Concept:</strong> Formal evaluation results on the held-out test set ($N=7,000$). See detailed tables in Section 5 below.
+    </p>
+  </div>
+
+  <div class="card">
+    <span class="slide-tag">SLIDE 9 & 10</span> <strong>How to Read the Results & Viva Takeaways</strong>
+    <p style="font-size: 8.5pt; margin-top: 4px;">
+      <strong>Key Concept:</strong> <em>"Accuracy is not the answer when the positive class is rare."</em> In severe 0.07% imbalance, a dummy model predicting zero purchases achieves 99.93% accuracy but is completely useless. Trust <strong>Macro-F1 for sequences</strong>, <strong>PR-AUC for propensity</strong>, and <strong>Fatigue Suppression count for strategy simulation</strong>.
+    </p>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ==================== 5. DEEP DIVE: ALL ML MODELS & RESEARCH QUESTIONS ==================== -->
+  <h2>5. Comprehensive Machine Learning Evaluation (RQ1 to RQ4)</h2>
+
+  <!-- RQ1 -->
+  <h3>5.1 RQ1: Next-Event Prediction (Sequence Modeling)</h3>
+  <p><strong>Goal:</strong> Forecast whether the customer's next interaction will be a <code>PRODUCT_VIEW</code>, <code>ADD_TO_CART</code>, or <code>PURCHASE</code>.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Model</th>
+        <th>Accuracy</th>
+        <th>Precision (macro)</th>
+        <th>Recall (macro)</th>
+        <th>F1 (macro)</th>
+        <th>Top-2 Accuracy</th>
+        <th>Evaluation Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1st-Order Markov Chain</td>
+        <td>0.9869</td>
+        <td>0.3298</td>
+        <td>0.3325</td>
+        <td>0.3311</td>
+        <td>1.0000</td>
+        <td>Transition probability matrix baseline</td>
+      </tr>
+      <tr>
+        <td>Static Logistic Regression</td>
+        <td>0.9843</td>
+        <td>0.3298</td>
+        <td>0.3316</td>
+        <td>0.3307</td>
+        <td>0.9843</td>
+        <td>Aggregated count features</td>
+      </tr>
+      <tr>
+        <td>Random Forest Classifier</td>
+        <td>0.9843</td>
+        <td>0.3298</td>
+        <td>0.3316</td>
+        <td>0.3307</td>
+        <td>0.9843</td>
+        <td>100 decision trees</td>
+      </tr>
+      <tr>
+        <td>XGBoost Classifier</td>
+        <td>0.9895</td>
+        <td>0.3298</td>
+        <td>0.3333</td>
+        <td>0.3316</td>
+        <td>0.9895</td>
+        <td>Gradient boosted trees</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>GRU Neural Network ★</strong></td>
+        <td><strong>0.9921</strong></td>
+        <td><strong>0.6640</strong></td>
+        <td><strong>0.4167</strong></td>
+        <td><strong>0.4653</strong></td>
+        <td><strong>1.0000</strong></td>
+        <td><strong>CHAMPION: Recurrent sequence state memory</strong></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout callout-tip">
+    <strong>Why GRU Won RQ1:</strong> Non-recurrent models collapse into predicting <code>PRODUCT_VIEW</code> (98%+ of events). The Gated Recurrent Unit (GRU) maintains hidden state memory across event timestamps, correctly detecting the transition signature when browsing velocity intensifies into carting and purchase.
+  </div>
+
+  <!-- RQ2 -->
+  <h3>5.2 RQ2: Customer Segmentation & Behavioral Profiling</h3>
+  <p><strong>Goal:</strong> Discover meaningful, cohesive customer clusters based on Recency, Frequency, Monetary (RFM), and Browse Velocity.</p>
+
+  <div class="grid-2">
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>K-Means Clusters</th>
+            <th>Silhouette Score</th>
+            <th>Finding</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>K = 3</td><td>0.5531</td><td>Under-segmented</td></tr>
+          <tr class="highlight"><td><strong>K = 4 ★</strong></td><td><strong>0.5606</strong></td><td><strong>Optimal Cluster Separation</strong></td></tr>
+          <tr><td>K = 5</td><td>0.5537</td><td>High cohesion</td></tr>
+          <tr><td>K = 6</td><td>0.5215</td><td>Cluster fragmentation</td></tr>
+          <tr><td>K = 7 / 8</td><td>0.5099 / 0.5120</td><td>Over-segmentation</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Discovered Segment</th>
+            <th>Customer Count</th>
+            <th>% Share</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>At-Risk / Inactive</strong></td><td>23,894</td><td>68.27%</td></tr>
+          <tr><td><strong>Recent Browsers</strong></td><td>10,058</td><td>28.74%</td></tr>
+          <tr><td><strong>Cart Abandoners</strong></td><td>672</td><td>1.92%</td></tr>
+          <tr><td><strong>Champions & High Value</strong></td><td>283</td><td>0.81%</td></tr>
+          <tr><td><strong>High Intent Cohort</strong></td><td>93</td><td>0.27%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RQ3 -->
+  <h3>5.3 RQ3: Purchase Propensity Modeling (Static vs. Journey-Aware Features)</h3>
+  <p><strong>Goal:</strong> Predict post-&tau; conversion under extreme class imbalance (0.07% true positive rate).</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Feature Set</th>
+        <th>Model Architecture</th>
+        <th>Accuracy</th>
+        <th>Precision</th>
+        <th>Recall</th>
+        <th>F1-Score</th>
+        <th>ROC-AUC</th>
+        <th>PR-AUC ★</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="highlight">
+        <td><strong>Static Features</strong></td>
+        <td><strong>Logistic Regression ★</strong></td>
+        <td>0.8164</td>
+        <td>0.0055</td>
+        <td>0.3889</td>
+        <td>0.0108</td>
+        <td>0.5677</td>
+        <td><strong>0.1483 (Test Champion)</strong></td>
+      </tr>
+      <tr>
+        <td>Static Features</td>
+        <td>Random Forest</td>
+        <td>0.9973</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.6331</td>
+        <td>0.0148</td>
+      </tr>
+      <tr>
+        <td>Static Features</td>
+        <td>XGBoost</td>
+        <td>0.9974</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.7473</td>
+        <td>0.0528</td>
+      </tr>
+      <tr>
+        <td>Journey-Aware</td>
+        <td>Logistic Regression</td>
+        <td>0.5274</td>
+        <td>0.0030</td>
+        <td>0.5556</td>
+        <td>0.0060</td>
+        <td>0.6274</td>
+        <td>0.1050</td>
+      </tr>
+      <tr>
+        <td>Journey-Aware</td>
+        <td>Random Forest</td>
+        <td>0.9961</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.7408</td>
+        <td>0.0407</td>
+      </tr>
+      <tr>
+        <td>Journey-Aware</td>
+        <td>XGBoost (Validation Tuned)</td>
+        <td>0.9961</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td>0.0000</td>
+        <td><strong>0.9946 (Val AUC)</strong></td>
+        <td>0.0322</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="color: #6b21a8;">Top Global SHAP Drivers</h3>
+      <p style="font-size: 8pt;">Features driving journey-aware predictions:</p>
+      <ul style="font-size: 8pt;">
+        <li><code>stage_code</code>: <strong>2.7318 mean |SHAP|</strong> (Dominant signal)</li>
+        <li><code>total_events</code>: <strong>0.1280 mean |SHAP|</strong></li>
+        <li><code>recency_days</code>: <strong>0.0278 mean |SHAP|</strong></li>
+        <li><code>gru_latent_embed</code>: <strong>0.0051 mean |SHAP|</strong></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color: #1e40af;">Understanding the Metrics (PR-AUC vs ROC-AUC)</h3>
+      <p style="font-size: 8pt;">
+        ROC-AUC can be deceptively high (~0.99) with 99.9% true negatives. <strong>PR-AUC (Precision-Recall AUC)</strong> focuses strictly on positive convertors. Static Logistic Regression achieved the highest held-out test PR-AUC (0.1483).
+      </p>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- RQ4 -->
+  <h3>5.4 RQ4: Strategy Simulation & Policy Evaluation (Eq. 15 Protocol)</h3>
+  <p><strong>Goal:</strong> Counterfactual offline comparison of marketing intervention policies on 7,000 held-out visitors.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Marketing Strategy Policy</th>
+        <th>Target Precision (Prectarget)</th>
+        <th>Audience Coverage</th>
+        <th>Unnecessary Interventions</th>
+        <th>Wait & Suppress Count ★</th>
+        <th>Action Distribution Breakdown</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Generic Marketing (Baseline 1)</strong></td>
+        <td>0.0026</td>
+        <td>100.0% (1.0000)</td>
+        <td>71</td>
+        <td>0 (0.0%)</td>
+        <td>7,000 Broadcast Emails</td>
+      </tr>
+      <tr>
+        <td><strong>Segment-Based Rules (Baseline 2)</strong></td>
+        <td>0.0026</td>
+        <td>100.0% (1.0000)</td>
+        <td>285 (High Spam)</td>
+        <td>0 (0.0%)</td>
+        <td>6,701 Emails, 72 Discounts, 156 Cart Reminders, 71 Cross-Sells</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>Journey-Intelligence (Our System)</strong></td>
+        <td>0.0023</td>
+        <td>33.3% (0.3333)</td>
+        <td><strong>149 (-47.7% vs Segment)</strong></td>
+        <td><strong>4,391 (62.7% Spared)</strong></td>
+        <td><strong>4,348 WAIT, 2,397 Re-Engagement, 156 Cart Reminders, 43 Suppress</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-warning">
+    <strong>Why Generic "Wins" on Raw Prectarget in Offline Simulation:</strong>
+    Because conversion is rare (0.07%), blasting 100% of visitors guarantees touching all convertors. However, it creates severe customer fatigue. <strong>Journey-Intelligence intentionally issues 4,391 Wait/Suppress decisions</strong>, preventing spam, eliminating coupon waste, and improving long-term retention.
+  </div>
+
+  <!-- ==================== 6. PLATFORM FEATURE WALKTHROUGH ==================== -->
+  <h2>6. Complete Platform UI & Features Walkthrough</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="color: #1e1145;">1. Overview & Customer 360</h3>
+      <ul style="font-size: 8pt;">
+        <li><strong>Executive KPI Bar:</strong> Conversion rate, active journeys, cart abandonment rate.</li>
+        <li><strong>Customer Timeline:</strong> Chronological clickstream displaying item views, cart additions, and duration.</li>
+        <li><strong>Customer 360 Drawer:</strong> Shows live RFM segment, churn risk, and active NBMA prescription.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color: #1e1145;">2. Journey Explorer & Funnel Analytics</h3>
+      <ul style="font-size: 8pt;">
+        <li><strong>Journey Stage Distribution:</strong> Live tracking across 7 stages.</li>
+        <li><strong>Drop-Off Funnel:</strong> Pinpointing drop-offs between View &rarr; Cart (97.3%) and Cart &rarr; Purchase (69.5%).</li>
+        <li><strong>Path Analysis:</strong> Most common multi-touch sequences.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color: #1e1145;">3. Next Best Action (NBMA) Console</h3>
+      <ul style="font-size: 8pt;">
+        <li><strong>Policy Rules:</strong> Instant discount vs cart reminder vs suppression.</li>
+        <li><strong>Catalog Stock Validation:</strong> Cross-checks item inventory before recommending products.</li>
+        <li><strong>Suppression Engine:</strong> Blocks marketing for fatigued or dormant users.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="color: #1e1145;">4. Experiments & Model Evaluation</h3>
+      <ul style="font-size: 8pt;">
+        <li><strong>Strategy Comparison:</strong> Table XIII simulation & interactive ROI/Fatigue sandbox.</li>
+        <li><strong>Model Evaluation:</strong> ROC-AUC, PR-AUC, Confusion Matrix, and SHAP attribution.</li>
+        <li><strong>Live Inference Simulator:</strong> Test real-time scoring with custom user parameters.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ==================== 7. VIVA & REVIEW QUESTIONS CHEAT SHEET ==================== -->
+  <h2>7. Examiner Viva & Review Questions Cheat Sheet</h2>
+
+  <div class="card">
+    <p style="font-weight: 700; color: #1e1145;">Q1: How did you prevent data leakage during model training?</p>
+    <p style="font-size: 8pt; color: #334155;">
+      <strong>Answer:</strong> We implemented a strict chronological split using a cutoff timestamp &tau; (80th percentile). All customer behavioral features were calculated strictly from events occurring at or before &tau;, while target labels (purchase vs non-purchase) were derived exclusively from events occurring after &tau;. We avoided random splits which leak future interactions into the training set.
+    </p>
+  </div>
+
+  <div class="card">
+    <p style="font-weight: 700; color: #1e1145;">Q2: Why did you use PR-AUC instead of standard Accuracy or ROC-AUC for RQ3?</p>
+    <p style="font-size: 8pt; color: #334155;">
+      <strong>Answer:</strong> Our dataset exhibits severe class imbalance (0.07% post-&tau; purchase rate). In such distributions, a baseline model that predicts "no purchase" for 100% of users achieves 99.93% accuracy but has zero utility. ROC-AUC is distorted by large true-negative counts. PR-AUC directly evaluates the precision-recall trade-off on rare positive buyers.
+    </p>
+  </div>
+
+  <div class="card">
+    <p style="font-weight: 700; color: #1e1145;">Q3: Why did the Generic strategy win on Prectarget in RQ4, and why is Journey Intelligence still superior?</p>
+    <p style="font-size: 8pt; color: #334155;">
+      <strong>Answer:</strong> In offline holdout simulation, generic broadcast touches 100% of visitors, catching all rare buyers by brute force. However, it sends 7,000 spam messages. Journey Intelligence intentionally trades brute-force coverage for 4,391 non-intrusive WAIT/SUPPRESS decisions (62.7%), reducing unnecessary marketing interruptions by 47.7% and protecting customer lifetime value.
+    </p>
+  </div>
+
+  <div class="card">
+    <p style="font-weight: 700; color: #1e1145;">Q4: What is the role of SHAP in your Next Best Action decision engine?</p>
+    <p style="font-size: 8pt; color: #334155;">
+      <strong>Answer:</strong> SHAP (SHapley Additive exPlanations) provides transparent feature attribution. For each prediction, SHAP calculates the exact marginal contribution of signals like <code>stage_code</code>, <code>total_events</code>, and <code>recency_days</code>, allowing marketing analysts to understand <em>why</em> an action was recommended rather than trusting a black box.
+    </p>
+  </div>
+
+</body>
+</html>
