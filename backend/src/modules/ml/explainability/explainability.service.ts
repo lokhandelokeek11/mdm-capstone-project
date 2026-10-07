@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getScoreByExternalId } from "@/lib/ml-artifacts";
 
 export const explainabilityService = {
   async explainCustomerScoring(organizationId: string, customerId: string) {
@@ -8,6 +9,16 @@ export const explainabilityService = {
     });
 
     if (!customer) return { explanations: ["Customer profile not initialized."] };
+
+    if (customer.externalId) {
+      const artifact = getScoreByExternalId(customer.externalId);
+      if (artifact?.shapFeatures?.length) {
+        const explanations = artifact.shapFeatures.map(
+          (f) => `${f.feature}: SHAP ${f.shap > 0 ? "+" : ""}${f.shap.toFixed(3)} (TreeSHAP on champion propensity model).`,
+        );
+        return { customerId, explanations, shapFeatures: artifact.shapFeatures };
+      }
+    }
 
     const viewCount = customer.events.filter((e) => e.eventType === "PRODUCT_VIEW").length;
     const cartCount = customer.events.filter((e) => e.eventType === "ADD_TO_CART").length;

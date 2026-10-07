@@ -1,0 +1,106 @@
+{
+  "funnel": {
+    "description": "Pre-cutoff visitor funnel (unique visitors, paper Sec. X)",
+    "stages": [
+      {
+        "stage": "All cohort visitors",
+        "count": 35000,
+        "pct_of_cohort": 1.0
+      },
+      {
+        "stage": "\u22651 product view",
+        "count": 34913,
+        "pct_of_cohort": 0.9975
+      },
+      {
+        "stage": "\u22651 add-to-cart",
+        "count": 928,
+        "pct_of_cohort": 0.0265
+      },
+      {
+        "stage": "\u22651 purchase (pre-cutoff)",
+        "count": 283,
+        "pct_of_cohort": 0.0081
+      }
+    ],
+    "drop_off": {
+      "view_to_cart_visitor_rate": 0.0266,
+      "cart_to_purchase_visitor_rate": 0.305
+    },
+    "event_level_counts": {
+      "views": 65532,
+      "add_to_cart": 1465,
+      "transactions_pre_cutoff": 431
+    },
+    "event_funnel_rates": {
+      "cart_per_view_events": 0.0224,
+      "purchase_per_cart_events": 0.2942
+    }
+  },
+  "journey_stage_distribution": [
+    {
+      "stage": "INACTIVE",
+      "count": 29997,
+      "pct": 0.8571
+    },
+    {
+      "stage": "INITIAL_ENGAGEMENT",
+      "count": 3388,
+      "pct": 0.0968
+    },
+    {
+      "stage": "EXPLORATION",
+      "count": 1109,
+      "pct": 0.0317
+    },
+    {
+      "stage": "CONSIDERATION",
+      "count": 331,
+      "pct": 0.0095
+    },
+    {
+      "stage": "HIGH_INTENT",
+      "count": 115,
+      "pct": 0.0033
+    },
+    {
+      "stage": "CONVERSION",
+      "count": 43,
+      "pct": 0.0012
+    },
+    {
+      "stage": "RETENTION",
+      "count": 17,
+      "pct": 0.0005
+    }
+  ],
+  "segment_distribution": [
+    {
+      "segment": "At-Risk / Inactive",
+      "count": 23894,
+      "pct": 0.6827
+    },
+    {
+      "segment": "Recent Browsers",
+      "count": 10058,
+      "pct": 0.2874
+    },
+    {
+      "segment": "Cart Abandoners",
+      "count": 672,
+      "pct": 0.0192
+    },
+    {
+      "segment": "Champions & High Value",
+      "count": 283,
+      "pct": 0.0081
+    },
+    {
+      "segment": "High Intent Cohort",
+      "count": 93,
+      "pct": 0.0027
+    }
+  ],
+  "post_cutoff_purchasers_in_cohort": 26,
+  "post_cutoff_purchase_rate": 0.0007
+}

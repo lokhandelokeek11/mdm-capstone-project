@@ -1,4 +1,6 @@
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { modelsApi } from "@/lib/api/modelsApi";
 import { PageHeader } from "@/components/common/PageHeader";
 import { StatCard } from "@/components/common/StatCard";
 import { DataTable } from "@/components/common/DataTable";
@@ -15,6 +17,7 @@ import {
   Layers,
   Check,
 } from "lucide-react";
+import { ResearchQuestionsPanel } from "@/features/admin/components/ResearchQuestionsPanel";
 import {
   ResponsiveContainer,
   LineChart,
@@ -251,6 +254,16 @@ const MODELS_DATA: DetailedModel[] = [
 ];
 
 export function ModelsPage() {
+  const { data: researchPayload } = useQuery({
+    queryKey: ["ml-research-metrics"],
+    queryFn: () => modelsApi.research(),
+    staleTime: 120_000,
+  });
+  const rq3 = researchPayload?.data?.RQ3_propensity as {
+    journey_aware?: { xgboost?: { roc_auc?: number; pr_auc?: number; f1?: number } };
+  } | undefined;
+  const championXgb = rq3?.journey_aware?.xgboost;
+
   const [selectedModelId, setSelectedModelId] = useState<string>("propensity-xgboost");
   const [isRetraining, setIsRetraining] = useState(false);
   const [showToast, setShowToast] = useState(false);
@@ -342,34 +355,35 @@ export function ModelsPage() {
         </div>
       </div>
 
+      <ResearchQuestionsPanel />
+
       {/* Overview Stat Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           metric={{
-            label: "Best Model ROC-AUC",
-            value: 0.928,
-            format: "number",
-            change: 1.4,
+            label: "Champion ROC-AUC (RQ3 XGBoost)",
+            value: championXgb?.roc_auc ?? "—",
+            format: typeof championXgb?.roc_auc === "number" ? "number" : undefined,
           }}
         />
         <StatCard
           metric={{
-            label: "Avg Model Accuracy",
-            value: 91.8,
-            format: "percent",
-            change: 0.8,
+            label: "Champion PR-AUC (paper Sec. VII-E)",
+            value: championXgb?.pr_auc ?? "—",
+            format: typeof championXgb?.pr_auc === "number" ? "number" : undefined,
           }}
         />
         <StatCard
           metric={{
-            label: "Active Production Pipelines",
+            label: "Offline ML Pipelines (measured)",
             value: 4,
           }}
         />
         <StatCard
           metric={{
-            label: "Avg Real-Time Latency",
-            value: 13.3,
+            label: "Propensity F1 (holdout)",
+            value: championXgb?.f1 != null ? championXgb.f1 * 100 : "—",
+            format: typeof championXgb?.f1 === "number" ? "percent" : undefined,
           }}
         />
       </div>

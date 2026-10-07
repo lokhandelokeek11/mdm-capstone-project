@@ -43,7 +43,19 @@ function generatePageCustomers(page: number, filter: string, search: string, raw
   }
 
   // Otherwise, deterministically generate Page P's unique RetailRocket visitors
-  const stages = ["INTENT", "PURCHASE", "CONSIDERATION", "AWARENESS", "INACTIVE", "RETENTION"] as const;
+  const stages = [
+    "INITIAL_ENGAGEMENT",
+    "EXPLORATION",
+    "CONSIDERATION",
+    "HIGH_INTENT",
+    "INTENT",
+    "CONVERSION",
+    "PURCHASE",
+    "RETENTION",
+    "AWARENESS",
+    "INACTIVE",
+    "CHURN_RISK",
+  ] as const;
   const pageCustomers: Customer[] = [];
 
   for (let i = 0; i < pageSize; i++) {

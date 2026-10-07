@@ -117,10 +117,12 @@ pie title RetailRocket Behavioral Event Distribution
 
 | Model ID & Name | Machine Learning Algorithm | Primary Evaluation Metric | Final Score | Secondary Metrics |
 | :--- | :--- | :--- | :--- | :--- |
-| **`m1_propensity`** Purchase Propensity Engine | **Logistic Regression** (`C=1.0`, `solver='lbfgs'`) | **Accuracy** | **100.0%** | ROC-AUC: `1.0000`, Precision: `0.91`, Recall: `1.00` |
-| **`m2_segmentation`** Customer Segmentation | **K-Means Clustering** (`k=4`, `init='k-means++'`) | **Silhouette Score** | **0.8807** | Inertia: `2.41e5`, Calinski-Harabasz: `8412.4` |
-| **`m3_churn`** Churn & Inactivity Predictor | **Gradient Boosting** (`n_estimators=100`, `learning_rate=0.1`) | **Accuracy** | **91.5%** | F1-Score: `0.8840`, ROC-AUC: `0.9320` |
-| **`m4_next_event`** Next Event Predictor | **Random Forest** (`n_estimators=100`, `max_depth=12`) | **Accuracy** | **89.5%** | Top-3 Accuracy: `96.2%`, Macro F1: `0.871` |
+| **`m1_propensity`** Purchase Propensity Engine | **XGBoost** (journey-aware features + GRU embeddings) | **ROC-AUC** | **0.9742** | F1: `0.1111` (holdout post-cutoff purchase label; severe class imbalance) |
+| **`m2_segmentation`** Customer Segmentation | **K-Means** (`k=3` selected by silhouette sweep) | **Silhouette** | **0.6173** | Calinski-Harabasz: `120868.4`, Davies-Bouldin: `0.4166` |
+| **`m3_churn`** Churn & Inactivity Predictor | **XGBoost** (post-cutoff inactivity) | **ROC-AUC** | **0.9873** | F1: `0.9964`, Accuracy: `99.29%` |
+| **`m4_next_event`** Next Event Predictor | **First-order Markov** (champion vs LR/RF/XGB/GRU) | **Macro F1** | **0.3333** | See `data/artifacts/research_results.json` RQ1 table |
+
+Evaluation uses an **80th-percentile chronological cutoff** on RetailRocket (features pre-cutoff, labels post-cutoff). Full RQ1–RQ4 tables: `data/artifacts/research_results.json`. Regenerate via `python ml/train_models.py`.
 
 ### Key Feature Engineering Matrix:
 1. **Recency**: Days elapsed between user's maximum timestamp and baseline epoch.

@@ -2,6 +2,8 @@ import fs from "fs";
 import path from "path";
 import readline from "readline";
 import { prisma } from "@/lib/prisma";
+import { getScoreByExternalId } from "@/lib/ml-artifacts";
+import { decideNextBestAction } from "@/modules/ml/decision-engine/decision-engine.service";
 
 export interface ColumnMappingInput {
   visitorIdCol?: string;
@@ -322,23 +324,24 @@ export const datasetPipelineService = {
       else if (cartCount > 0) segmentName = "Cart Abandoners";
       else if (recencyDays > 30) segmentName = "At-Risk / Inactive";
 
-      const propensityScore = Math.min(0.98, Math.max(0.05, 0.2 + cartCount * 0.35 + viewCount * 0.05 - recencyDays * 0.01));
-      const churnRiskScore = Math.min(0.99, Math.max(0.01, recencyDays * 0.03 + (cartCount > 0 && purchaseCount === 0 ? 0.4 : 0)));
+      const artifact = customer.externalId ? getScoreByExternalId(customer.externalId) : null;
+      if (artifact?.segment) segmentName = artifact.segment;
+      const propensityScore = artifact?.propensity ?? Math.min(0.98, Math.max(0.05, 0.2 + cartCount * 0.35 + viewCount * 0.05 - recencyDays * 0.01));
+      const churnRiskScore = artifact?.churnRisk ?? Math.min(0.99, Math.max(0.01, recencyDays * 0.03 + (cartCount > 0 && purchaseCount === 0 ? 0.4 : 0)));
+      const journeyStage = artifact?.journeyStage ?? (cartCount > 0 ? "HIGH_INTENT" : "CONSIDERATION");
 
-      // Step 9 — Decision Engine Next Best Action (NBMA)
-      let recommendedAction: "CART_REMINDER" | "DISCOUNT" | "PERSONALIZED_EMAIL" | "RE_ENGAGEMENT" | "STOP_MARKETING" = "PERSONALIZED_EMAIL";
-      let actionReason = "Engaged user with high browsing interest.";
-
-      if (cartCount > 0 && purchaseCount === 0) {
-        recommendedAction = "CART_REMINDER";
-        actionReason = `Customer added item to cart without purchase. High conversion propensity (${(propensityScore * 100).toFixed(0)}%).`;
-      } else if (churnRiskScore > 0.6) {
-        recommendedAction = "DISCOUNT";
-        actionReason = `High inactivity churn risk (${(churnRiskScore * 100).toFixed(0)}%). Send incentive discount offer.`;
-      } else if (recencyDays > 14) {
-        recommendedAction = "RE_ENGAGEMENT";
-        actionReason = "Inactivity period detected (>14 days). Re-engagement email sequence recommended.";
-      }
+      const nbma = decideNextBestAction({
+        stage: journeyStage,
+        segment: segmentName,
+        propensity: propensityScore,
+        churnRisk: churnRiskScore,
+        carts: cartCount,
+        purchasesPre: purchaseCount,
+        recencyDays,
+        nextEvent: artifact?.nextEvent ?? null,
+      });
+      const recommendedAction = nbma.actionType;
+      const actionReason = nbma.reason;
 
       // Persist Customer Features
       await prisma.customerFeature.upsert({
@@ -356,6 +359,7 @@ export const datasetPipelineService = {
             propensityScore,
             churnRiskScore,
             segmentName,
+            journeyStage,
           },
         },
         update: {
@@ -368,6 +372,7 @@ export const datasetPipelineService = {
             propensityScore,
             churnRiskScore,
             segmentName,
+            journeyStage,
           },
         },
       });

@@ -12,6 +12,8 @@ This platform analyzes customer behavioral events, constructs chronological cust
 customer-journey-intelligence/
 ├── frontend/     # React + Vite + TypeScript (UI)
 ├── backend/      # Next.js API server + Prisma + PostgreSQL
+├── ml/           # RetailRocket ML study (RQ1–RQ4), train_models.py
+├── data/artifacts/  # research_results.json, model_metrics.json (generated)
 ├── docs/         # Architecture documentation
 └── docker-compose.yml  # Optional PostgreSQL for local dev
 ```
@@ -81,7 +83,19 @@ npx prisma generate      # Generate Prisma client
 npx prisma migrate dev   # Run migrations
 npx prisma db seed       # Seed demo data
 npx prisma studio        # Open database GUI
+npm run ml:import        # Load data/artifacts into PostgreSQL (after training)
 ```
+
+## Machine learning (synopsis study)
+
+Place RetailRocket `events.csv` under `data/raw/retailrocket/`, then:
+
+```bash
+pip install -r ml/requirements.txt
+python ml/train_models.py
+```
+
+See [ml/README.md](ml/README.md). The admin **Model Evaluation** page reads `GET /api/models/research` for RQ1–RQ4 tables.
 
 ## Environment Variables
 

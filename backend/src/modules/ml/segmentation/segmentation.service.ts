@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { getScoreByExternalId } from "@/lib/ml-artifacts";
 
 export interface SegmentationResult {
   customerId: string;
@@ -60,6 +61,14 @@ export const segmentationService = {
   },
 
   async predict(organizationId: string, customerId: string) {
+    const customer = await prisma.customer.findFirst({
+      where: { id: customerId, organizationId },
+    });
+    if (customer?.externalId) {
+      const artifact = getScoreByExternalId(customer.externalId);
+      if (artifact?.segment) return artifact.segment;
+    }
+
     const customerSegment = await prisma.customerSegment.findFirst({
       where: { customerId },
       include: { segment: true },

@@ -1,0 +1,19 @@
+{
+  "raw_rows_read": 2756101,
+  "raw_unique_visitors": 1407580,
+  "rows_missing_visitor_id": 0,
+  "rows_invalid_timestamp": 0,
+  "rows_unknown_event_type": 0,
+  "rows_after_schema_validation": 2756101,
+  "visitors_after_schema_validation": 1407580,
+  "duplicate_rows_removed": 460,
+  "high_rate_visitors_flagged": 0,
+  "events_from_high_rate_visitors": 0,
+  "clean_events": 2755641,
+  "clean_unique_visitors": 1407580,
+  "clean_unique_items": 235061,
+  "clean_view_events": 2664218,
+  "clean_addtocart_events": 68966,
+  "clean_transaction_events": 22457,
+  "visitors_with_at_least_one_purchase": 11719
+}

@@ -1,0 +1,458 @@
+{
+  "generatedAt": "2026-10-05T09:52:12.916529+00:00",
+  "table_iv_post_cleaning": {
+    "raw_rows_read": 2756101,
+    "raw_unique_visitors": 1407580,
+    "rows_missing_visitor_id": 0,
+    "rows_invalid_timestamp": 0,
+    "rows_unknown_event_type": 0,
+    "rows_after_schema_validation": 2756101,
+    "visitors_after_schema_validation": 1407580,
+    "duplicate_rows_removed": 460,
+    "high_rate_visitors_flagged": 0,
+    "events_from_high_rate_visitors": 0,
+    "clean_events": 2755641,
+    "clean_unique_visitors": 1407580,
+    "clean_unique_items": 235061,
+    "clean_view_events": 2664218,
+    "clean_addtocart_events": 68966,
+    "clean_transaction_events": 22457,
+    "visitors_with_at_least_one_purchase": 11719
+  },
+  "experimental_protocol": {
+    "description": "Paper Sec. IX-A: chronological splits; features from t\u2264\u03c4; labels from post-\u03c4 window",
+    "feature_reference_time_tau": 1439871800445,
+    "tau_percentile": 0.8,
+    "propensity_label": "1 if visitor has \u22651 transaction with timestamp > \u03c4",
+    "train_val_test_ratio": "0.7/0.1/0.2",
+    "split_method": "Visitors sorted by last pre-\u03c4 activity timestamp (earliest\u2192latest)",
+    "validation_use": "XGBoost scale_pos_weight tuned on validation PR-AUC (Table X / RQ3)",
+    "n_train": 24500,
+    "n_validation": 3500,
+    "n_test": 7000,
+    "validation_last_pre_ts_range": [
+      1437278088090,
+      1438035649736
+    ],
+    "test_last_pre_ts_range": [
+      1438035732742,
+      1439871426788
+    ]
+  },
+  "section_x_journey_funnel_analytics": {
+    "funnel": {
+      "description": "Pre-cutoff visitor funnel (unique visitors, paper Sec. X)",
+      "stages": [
+        {
+          "stage": "All cohort visitors",
+          "count": 35000,
+          "pct_of_cohort": 1.0
+        },
+        {
+          "stage": "\u22651 product view",
+          "count": 34913,
+          "pct_of_cohort": 0.9975
+        },
+        {
+          "stage": "\u22651 add-to-cart",
+          "count": 928,
+          "pct_of_cohort": 0.0265
+        },
+        {
+          "stage": "\u22651 purchase (pre-cutoff)",
+          "count": 283,
+          "pct_of_cohort": 0.0081
+        }
+      ],
+      "drop_off": {
+        "view_to_cart_visitor_rate": 0.0266,
+        "cart_to_purchase_visitor_rate": 0.305
+      },
+      "event_level_counts": {
+        "views": 65532,
+        "add_to_cart": 1465,
+        "transactions_pre_cutoff": 431
+      },
+      "event_funnel_rates": {
+        "cart_per_view_events": 0.0224,
+        "purchase_per_cart_events": 0.2942
+      }
+    },
+    "journey_stage_distribution": [
+      {
+        "stage": "INACTIVE",
+        "count": 29997,
+        "pct": 0.8571
+      },
+      {
+        "stage": "INITIAL_ENGAGEMENT",
+        "count": 3388,
+        "pct": 0.0968
+      },
+      {
+        "stage": "EXPLORATION",
+        "count": 1109,
+        "pct": 0.0317
+      },
+      {
+        "stage": "CONSIDERATION",
+        "count": 331,
+        "pct": 0.0095
+      },
+      {
+        "stage": "HIGH_INTENT",
+        "count": 115,
+        "pct": 0.0033
+      },
+      {
+        "stage": "CONVERSION",
+        "count": 43,
+        "pct": 0.0012
+      },
+      {
+        "stage": "RETENTION",
+        "count": 17,
+        "pct": 0.0005
+      }
+    ],
+    "segment_distribution": [
+      {
+        "segment": "At-Risk / Inactive",
+        "count": 23894,
+        "pct": 0.6827
+      },
+      {
+        "segment": "Recent Browsers",
+        "count": 10058,
+        "pct": 0.2874
+      },
+      {
+        "segment": "Cart Abandoners",
+        "count": 672,
+        "pct": 0.0192
+      },
+      {
+        "segment": "Champions & High Value",
+        "count": 283,
+        "pct": 0.0081
+      },
+      {
+        "segment": "High Intent Cohort",
+        "count": 93,
+        "pct": 0.0027
+      }
+    ],
+    "post_cutoff_purchasers_in_cohort": 26,
+    "post_cutoff_purchase_rate": 0.0007
+  },
+  "cohort": {
+    "n_visitors": 35000,
+    "n_events_clean": 2755641,
+    "n_events_loaded_raw": 2755641,
+    "cutoff_ts": 1439871800445,
+    "n_train": 24500,
+    "n_validation": 3500,
+    "n_test": 7000,
+    "propensity_positive_rate": 0.0007
+  },
+  "RQ1_next_event": {
+    "n_train": 326,
+    "n_test": 382,
+    "markov": {
+      "accuracy": 0.9869,
+      "precision": 0.3298,
+      "recall": 0.3325,
+      "f1": 0.3311,
+      "roc_auc": null,
+      "top3_accuracy": 1.0
+    },
+    "logistic_regression": {
+      "accuracy": 0.9843,
+      "precision": 0.3298,
+      "recall": 0.3316,
+      "f1": 0.3307,
+      "roc_auc": null,
+      "top3_accuracy": 0.9843
+    },
+    "random_forest": {
+      "accuracy": 0.9843,
+      "precision": 0.3298,
+      "recall": 0.3316,
+      "f1": 0.3307,
+      "roc_auc": null,
+      "top3_accuracy": 0.9843
+    },
+    "xgboost": {
+      "accuracy": 0.9895,
+      "precision": 0.3298,
+      "recall": 0.3333,
+      "f1": 0.3316,
+      "roc_auc": null,
+      "top3_accuracy": 0.9895
+    },
+    "gru": {
+      "accuracy": 0.9921,
+      "precision": 0.664,
+      "recall": 0.4167,
+      "f1": 0.4653,
+      "roc_auc": null,
+      "top3_accuracy": 1.0
+    },
+    "champion": "gru"
+  },
+  "RQ2_segmentation": {
+    "k_sweep": [
+      {
+        "k": 3,
+        "silhouette": 0.5531,
+        "calinski_harabasz": 77793.3,
+        "davies_bouldin": 0.5539
+      },
+      {
+        "k": 4,
+        "silhouette": 0.5606,
+        "calinski_harabasz": 80290.41,
+        "davies_bouldin": 0.474
+      },
+      {
+        "k": 5,
+        "silhouette": 0.5537,
+        "calinski_harabasz": 98020.37,
+        "davies_bouldin": 0.4738
+      },
+      {
+        "k": 6,
+        "silhouette": 0.5215,
+        "calinski_harabasz": 108217.64,
+        "davies_bouldin": 0.5203
+      },
+      {
+        "k": 7,
+        "silhouette": 0.5099,
+        "calinski_harabasz": 113308.71,
+        "davies_bouldin": 0.5385
+      },
+      {
+        "k": 8,
+        "silhouette": 0.512,
+        "calinski_harabasz": 119587.38,
+        "davies_bouldin": 0.5169
+      }
+    ],
+    "best_k": 4,
+    "behavioural_kmeans": {
+      "silhouette": 0.5606,
+      "calinski_harabasz": 80290.41,
+      "davies_bouldin": 0.474,
+      "cluster_names": {
+        "0": "Inactive / Dormant",
+        "1": "Inactive / Dormant",
+        "2": "Inactive / Dormant",
+        "3": "Inactive / Dormant"
+      }
+    },
+    "rfm_kmeans": {
+      "silhouette": 0.5528,
+      "clusters": 4
+    },
+    "rule_segments": {
+      "At-Risk / Inactive": 23894,
+      "Recent Browsers": 10058,
+      "Cart Abandoners": 672,
+      "Champions & High Value": 283,
+      "High Intent Cohort": 93
+    }
+  },
+  "RQ2_segmentation_note": {
+    "behavioural_silhouette": 0.5606,
+    "rfm_silhouette": 0.5528
+  },
+  "RQ3_propensity": {
+    "n_train": 24500,
+    "n_validation": 3500,
+    "n_test": 7000,
+    "positive_rate": 0.0007,
+    "static": {
+      "logistic_regression": {
+        "accuracy": 0.8164,
+        "precision": 0.0055,
+        "recall": 0.3889,
+        "f1": 0.0108,
+        "roc_auc": 0.5677,
+        "pr_auc": 0.1483
+      },
+      "random_forest": {
+        "accuracy": 0.9973,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.6331,
+        "pr_auc": 0.0148
+      },
+      "xgboost": {
+        "accuracy": 0.9974,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.7473,
+        "pr_auc": 0.0528
+      },
+      "gru": {
+        "accuracy": 0.3077,
+        "precision": 0.0008,
+        "recall": 0.2222,
+        "f1": 0.0016,
+        "roc_auc": 0.1598,
+        "pr_auc": 0.0017
+      }
+    },
+    "journey_aware": {
+      "logistic_regression": {
+        "accuracy": 0.5274,
+        "precision": 0.003,
+        "recall": 0.5556,
+        "f1": 0.006,
+        "roc_auc": 0.6274,
+        "pr_auc": 0.105
+      },
+      "random_forest": {
+        "accuracy": 0.9961,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.7408,
+        "pr_auc": 0.0407
+      },
+      "xgboost": {
+        "accuracy": 0.9961,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.7269,
+        "pr_auc": 0.0322,
+        "scale_pos_weight_tuned": 2.0
+      },
+      "gru": {
+        "accuracy": 0.9969,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "roc_auc": 0.3674,
+        "pr_auc": 0.0024
+      }
+    },
+    "validation_champion_journey_xgb": {
+      "accuracy": 0.9997,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.9946,
+      "pr_auc": 0.027,
+      "scale_pos_weight": 2.0
+    },
+    "champion_selection_metric": "pr_auc_on_test (tie-break f1)",
+    "champion_feature_set": "static",
+    "champion_model": "logistic_regression"
+  },
+  "RQ3_champion": {
+    "feature_set": "static",
+    "model": "logistic_regression"
+  },
+  "explainability": {
+    "global": [
+      {
+        "feature": "stage_code",
+        "importance": 2.7318
+      },
+      {
+        "feature": "total_events",
+        "importance": 0.128
+      },
+      {
+        "feature": "recency_days",
+        "importance": 0.0278
+      },
+      {
+        "feature": "gru_5",
+        "importance": 0.0051
+      },
+      {
+        "feature": "gru_1",
+        "importance": 0.0026
+      },
+      {
+        "feature": "session_count",
+        "importance": 0.002
+      },
+      {
+        "feature": "distinct_items",
+        "importance": 0.0002
+      },
+      {
+        "feature": "views",
+        "importance": 0.0002
+      },
+      {
+        "feature": "gru_16",
+        "importance": 0.0002
+      },
+      {
+        "feature": "gru_3",
+        "importance": 0.0001
+      },
+      {
+        "feature": "view_to_cart_hours",
+        "importance": 0.0
+      },
+      {
+        "feature": "cart_to_view_ratio",
+        "importance": 0.0
+      }
+    ]
+  },
+  "RQ4_strategy_simulation": {
+    "generic": {
+      "targeting_precision": 0.0026,
+      "coverage": 1.0,
+      "unnecessary_interventions": 71,
+      "wait_or_suppress_count": 0,
+      "action_distribution": {
+        "PERSONALIZED_EMAIL": 7000
+      },
+      "disclaimer": "Offline simulated proxy metrics; not causal lift."
+    },
+    "segment_based": {
+      "targeting_precision": 0.0026,
+      "coverage": 1.0,
+      "unnecessary_interventions": 285,
+      "wait_or_suppress_count": 0,
+      "action_distribution": {
+        "PERSONALIZED_EMAIL": 6701,
+        "DISCOUNT": 72,
+        "CART_REMINDER": 156,
+        "CROSS_SELL": 71
+      },
+      "disclaimer": "Offline simulated proxy metrics; not causal lift."
+    },
+    "journey_intelligence": {
+      "targeting_precision": 0.0023,
+      "coverage": 0.3333,
+      "unnecessary_interventions": 149,
+      "wait_or_suppress_count": 4391,
+      "action_distribution": {
+        "WAIT": 4348,
+        "RE_ENGAGEMENT": 2397,
+        "PERSONALIZED_EMAIL": 56,
+        "CART_REMINDER": 156,
+        "STOP_MARKETING": 43
+      },
+      "disclaimer": "Offline simulated proxy metrics; not causal lift."
+    },
+    "winner": "generic"
+  },
+  "champions": {
+    "next_event": "gru",
+    "propensity": "logistic_regression",
+    "propensity_features": "static"
+  }
+}
